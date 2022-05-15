@@ -36,7 +36,9 @@ dependencies:
   shared_preferences: ^2.0.13
   modal_progress_hud_nsn: ^0.1.0-nullsafety-1
   flutter_absolute_path: ^1.0.6
-
+  checkbox_formfield: ^0.2.0
+  provider: ^6.0.2
+  pin_code_fields: ^7.4.0
 
 dev_dependencies:
   flutter_test:
@@ -63,7 +65,11 @@ flutter:
   - images/person.png
   - images/Dots.png
   - images/sucess.png
+  - images/chk.png
+  - images/crs.png
   - images/ridergif.gif
+  
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

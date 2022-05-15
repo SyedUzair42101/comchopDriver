@@ -3,9 +3,8 @@ import 'package:delivery_boy_application/login_signup_screens/forgot_password_sc
 import 'package:delivery_boy_application/tabbar/tabbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
-
-
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class login_screen extends StatefulWidget {
   const login_screen({Key? key}) : super(key: key);
@@ -15,6 +14,8 @@ class login_screen extends StatefulWidget {
 }
 
 class _login_screenState extends State<login_screen> {
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
   @override
   Widget build(BuildContext context) {
     bool _isObscure = true;
@@ -30,180 +31,211 @@ class _login_screenState extends State<login_screen> {
           backgroundColor: Color.fromRGBO(255, 255, 255, 1),
           elevation: 0.0,
         ),
-        body: Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Welcome to Comchop',
-                  style: TextStyle(color: Colors.black, fontSize: 30),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'Enter your Phone number or Email',
-                  style: TextStyle(
-                      color: Color.fromRGBO(134, 134, 134, 1), fontSize: 16),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                RichText(
-                    text: TextSpan(children: <TextSpan>[
-                  TextSpan(
-                    text: " For sign in, Or ",
+        body: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Welcome to Comchop',
+                    style: TextStyle(color: Colors.black, fontSize: 30),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Enter your Phone number or Email',
                     style: TextStyle(
                         color: Color.fromRGBO(134, 134, 134, 1), fontSize: 16),
                   ),
-                  TextSpan(
-                    text: " Create new account. ",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color.fromRGBO(252, 186, 24, 1),
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => id_card_backside()),
-                        );
-                      },
+                  SizedBox(
+                    height: 5,
                   ),
-                ])),
-                SizedBox(
-                  height: 30,
-                ),
-                Center(
-                  child: Container(
-                    width: 334,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: TextField(
-                        keyboardType: TextInputType.phone,
-                        decoration: InputDecoration(
-                            suffixStyle: TextStyle(color: Colors.grey),
-                            suffixIcon: Icon(
-                              Icons.check,
-                              color: Color.fromRGBO(252, 186, 24, 1),
-                            ),
-                            prefixStyle: TextStyle(color: Colors.grey),
-                            hintText: 'Email Address',
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
-                                )),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
-                                )),
-                            errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: Colors.red)),
-                            focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: Colors.red))),
+                  RichText(
+                      text: TextSpan(children: <TextSpan>[
+                    TextSpan(
+                      text: " For sign in, Or ",
+                      style: TextStyle(
+                          color: Color.fromRGBO(134, 134, 134, 1),
+                          fontSize: 16),
+                    ),
+                    TextSpan(
+                      text: " Create new account. ",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color.fromRGBO(252, 186, 24, 1),
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Center(
-                  child: Container(
-                    width: 334,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: TextField(
-                        keyboardType: TextInputType.phone,
-                        decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                                icon: Icon(_isObscure
-                                    ? Icons.visibility
-                                    : Icons.visibility_off),
-                                onPressed: () {
-                                  setState(() {
-                                    _isObscure = !_isObscure;
-                                  });
-                                }),
-                            prefixStyle: TextStyle(color: Colors.grey),
-                            hintText: 'Password',
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
-                                )),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
-                                )),
-                            errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: Colors.red)),
-                            focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: Colors.red))),
-                      ),
-                    ),
-                  ),
-                ),
-                Center(
-                    child: GestureDetector(
-                        onTap: () {
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => forgot_password_screen()),
-
+                                builder: (context) => id_card_backside()),
                           );
                         },
-                        child: Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                              color: Color.fromRGBO(134, 134, 134, 1),
-                              fontSize: 16),
-                        ))),
-                SizedBox(
-                  height: 5,
-                ),
-                Center(
-                  child: Container(
-                      height: 50,
-                      width: 290,
-                      child: MaterialButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          color: Color.fromRGBO(252, 186, 24, 1),
-                          child: Text(
-                            'Signin',
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              color: Colors.white,
-                            ),
-                          ),
-                          onPressed: () {
+                    ),
+                  ])),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Center(
+                    child: Container(
+                      width: 334,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: TextField(
+                          controller: _email,
+                          decoration: InputDecoration(
+                              suffixStyle: TextStyle(color: Colors.grey),
+                              suffixIcon: Icon(
+                                Icons.check,
+                                color: Color.fromRGBO(252, 186, 24, 1),
+                              ),
+                              prefixStyle: TextStyle(color: Colors.grey),
+                              hintText: 'Email Address',
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                  )),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                  )),
+                              errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(color: Colors.red)),
+                              focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(color: Colors.red))),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Center(
+                    child: Container(
+                      width: 334,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: TextField(
+                          controller: _password,
+                          decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                  icon: Icon(_isObscure
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isObscure = !_isObscure;
+                                    });
+                                  }),
+                              prefixStyle: TextStyle(color: Colors.grey),
+                              hintText: 'Password',
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                  )),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                  )),
+                              errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(color: Colors.red)),
+                              focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(color: Colors.red))),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                      child: GestureDetector(
+                          onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      tab_bar_screen()),
+                                  builder: (context) =>
+                                      forgot_password_screen()),
                             );
-                          })),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-               
-               
-               
-              ]),
+                          },
+                          child: Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                                color: Color.fromRGBO(134, 134, 134, 1),
+                                fontSize: 16),
+                          ))),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Center(
+                    child: Container(
+                        height: 50,
+                        width: 290,
+                        child: MaterialButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            color: Color.fromRGBO(252, 186, 24, 1),
+                            child: Text(
+                              'Signin',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                color: Colors.white,
+                              ),
+                            ),
+                            onPressed: () {
+                              //     _login();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        tab_bar_screen()),
+                              );
+                            })),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                ]),
+          ),
         ));
+  }
+
+  Future _login() async {
+    final _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+    final MultipartRequest = new http.MultipartRequest("POST",
+        Uri.parse("https://dnpprojects.com/demo/comshop/api/driverlogin"));
+    MultipartRequest.fields.addAll({
+      "email_address": _email.text,
+      "password": _password.text,
+    });
+    http.StreamedResponse response = await MultipartRequest.send();
+    var resposeString = await response.stream.bytesToString();
+
+    final gettoken = prefs.getString('new');
+    print(gettoken);
+    if (response.statusCode == 200) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => tab_bar_screen(
+                  // finalToken: gettoken,
+                  )));
+    } else {
+      return CircularProgressIndicator();
+    }
+
+    print(response.statusCode);
+    print(resposeString);
+    print(response);
   }
 }

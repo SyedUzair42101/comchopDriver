@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:delivery_boy_application/login_signup_screens/login_screen.dart';
+import 'package:delivery_boy_application/login_signup_screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
@@ -29,13 +30,13 @@ class driving_license_backside extends StatefulWidget {
       this.Backimage,
       this.FrontDimage})
       : super(key: key);
-
   @override
   _driving_license_backsideState createState() =>
       _driving_license_backsideState();
 }
 
 class _driving_license_backsideState extends State<driving_license_backside> {
+  bool visible = false;
   File? drivingBack;
   void _getFromCamera() async {
     XFile? pickedimage = await ImagePicker()
@@ -114,7 +115,8 @@ class _driving_license_backsideState extends State<driving_license_backside> {
               Center(
                 child: InkWell(
                   onTap: () {
-                    asyncFileUpload();
+                    uploadImage();
+
                     // print(widget.Frontimage.toString() +
                     //     widget.Backimage.toString() +
                     //     widget.FrontDimage.toString() +
@@ -151,75 +153,193 @@ class _driving_license_backsideState extends State<driving_license_backside> {
     );
   }
 
-  Future asyncFileUpload() async {
-    var APIURL =
-        Uri.parse("https://dnpprojects.com/demo/comshop/api/DriverRegister");
-    //create multipart request for POST or PATCH method
-    var request = http.MultipartRequest("POST", APIURL);
-    //add text fields
-    request.fields["first_name"] = widget.firstname;
-    request.fields["last_name"] = widget.lastname;
-    request.fields["email_address"] = "dnbhhhgggzzgddbb";
-    request.fields["phone_number"] = widget.phonenumber;
-    request.fields["password"] = "widget.password";
-    request.fields["city_id"] = widget.cityid;
-    request.fields["confirm_password"] = "widget.password";
-    http.MultipartFile multipartFile =
-        await http.MultipartFile.fromPath('card_front', widget.Frontimage);
-    http.MultipartFile multipartFile1 =
-        await http.MultipartFile.fromPath('card_back', widget.Backimage);
-    http.MultipartFile multipartFile2 =
-        await http.MultipartFile.fromPath('license_front', widget.FrontDimage);
-    http.MultipartFile multipartFile3 = await http.MultipartFile.fromPath(
-        'license_back', drivingBack.toString());
-    // var pic = http.MultipartFile.fromBytes("card_front", widget.Frontimage);
+  Future uploadImage() async {
+    final multipartRequest = new http.MultipartRequest("POST",
+        Uri.parse("https://dnpprojects.com/demo/comshop/api/DriverRegister"));
 
-    //add multipart to request
-    //request.files.add(pic);
-    request.files.add(multipartFile);
-    request.files.add(multipartFile1);
-    request.files.add(multipartFile2);
-    request.files.add(multipartFile3);
+    multipartRequest.fields.addAll({
+      "first_name": widget.firstname,
+      "last_name": widget.lastname,
+      "email_address": widget.emailaddress,
+      "phone_number": widget.phonenumber,
+      "password": widget.password,
+      "city_id": widget.cityid,
+      "confirm_password": widget.password,
+    });
+    multipartRequest.files.add(
+      await http.MultipartFile.fromPath(
+        'card_front',
+        widget.Frontimage!.path,
+      ),
+    );
+    multipartRequest.files.add(
+      await http.MultipartFile.fromPath(
+        'card_back',
+        widget.Backimage!.path,
+      ),
+    );
+    multipartRequest.files.add(
+      await http.MultipartFile.fromPath(
+        'license_front',
+        widget.FrontDimage!.path,
+      ),
+    );
+    multipartRequest.files.add(
+      await http.MultipartFile.fromPath(
+        'license_back',
+        drivingBack!.path,
+      ),
+    );
+    http.StreamedResponse response = await multipartRequest.send();
 
-    var response = await request.send();
-    print(response);
-    //Get the response from the server
-    var responseData = await response.stream.toBytes();
-    var responseString = String.fromCharCodes(responseData);
-    print(response.statusCode);
-    print(responseString);
+    var responseString = await response.stream.bytesToString();
+
+    if (response.statusCode == 200) {
+      setState(() {
+        visible = false;
+      });
+    }
+    if (responseString ==
+        '{"success":false,"error":{"email_address":["The email address has already been taken."]}}') {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 80,
+                  width: 80,
+                  child: Image.asset(
+                    'images/crs.png',
+                    height: 80,
+                    width: 80,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Email Address has Already Registered",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: new Text("OK"),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => signup_screen()),
+                  );
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Column(
+              children: [
+                Container(
+                  height: 80,
+                  width: 80,
+                  child: Image.asset(
+                    'images/chk.png',
+                    height: 80,
+                    width: 80,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                new Text(
+                  "User Register Sucessfully",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: new Text("OK"),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => login_screen()),
+                  );
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    print("response: " + responseString);
+    print("response Status: ${response.statusCode}");
   }
+}
 
-  Future RegistrationUser() async {
-    List<int> fileContent = widget.Frontimage.readAsBytesSync();
+showAlertDialog(BuildContext context) {
+  // set up the button
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
 
-    String fileContentBase64 = base64.encode(fileContent);
-    print(fileContentBase64);
-    // var fileContent = widget.Frontimage.readAsBytesSync();
-    // var fileContentBase64 = base64.encode(fileContent);
-    List<int> fileContent1 = widget.Backimage.readAsBytesSync();
-    String fileContentBase641 = base64.encode(fileContent);
-    List<int> fileContent2 = widget.FrontDimage.readAsBytesSync();
-    String fileContentBase642 = base64.encode(fileContent);
-    var APIURL =
-        Uri.parse("https://dnpprojects.com/demo/comshop/api/DriverRegister");
-    var mapdata = {
-      'first_name': widget.firstname,
-      'last_name': widget.lastname,
-      'email_address': "hvbcgd",
-      'phone_number': widget.phonenumber,
-      'password': widget.password,
-      'city_id': widget.cityid,
-      'confirm_password': widget.confirmpassword,
-      "card_front": fileContentBase641.toString(),
-      "card_back": fileContentBase641.toString(),
-      "license_front": fileContentBase642.toString(),
-      "license_back": fileContentBase642.toString(),
-    };
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("ERROR"),
+    content: Text("User Already Exist"),
+    actions: [
+      okButton,
+    ],
+  );
 
-    //print("JSON DATA: ${mapdata}");
-    http.Response response = await http.post(APIURL, body: mapdata);
-    var data = jsonDecode(response.body);
-    print("DATA: ${data}");
-  }
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+showDoneDialog(BuildContext context) {
+  // set up the button
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("My title"),
+    content: Text("This is my message."),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

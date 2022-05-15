@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.delivery_boy_application">
-   <application
+    <uses-permission android:name="android.permission.CAMERA" />
+    <application
         android:label="delivery_boy_application"
         android:icon="@mipmap/ic_launcher">
        <meta-data android:name="com.google.android.geo.API_KEY"

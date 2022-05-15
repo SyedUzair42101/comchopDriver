@@ -1,13 +1,11 @@
+import 'package:delivery_boy_application/login_signup_screens/otp_screen.dart';
 import 'package:delivery_boy_application/login_signup_screens/reset_email_send.dart';
 import 'package:flutter/material.dart';
 
-
-
-
-
+import 'package:http/http.dart' as http;
 
 class forgot_password_screen extends StatelessWidget {
-  const forgot_password_screen({Key? key}) : super(key: key);
+  final TextEditingController _email = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +33,11 @@ class forgot_password_screen extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                Text('Enter your email address and we will ', style: TextStyle(color: Color.fromRGBO(134, 134, 134, 1), fontSize: 16),),
+                Text(
+                  'Enter your email address and we will ',
+                  style: TextStyle(
+                      color: Color.fromRGBO(134, 134, 134, 1), fontSize: 16),
+                ),
                 SizedBox(
                   height: 5,
                 ),
@@ -43,7 +45,8 @@ class forgot_password_screen extends StatelessWidget {
                     text: TextSpan(children: <TextSpan>[
                   TextSpan(
                     text: "send you a reset instructions.",
-                    style: TextStyle(color: Color.fromRGBO(134, 134, 134, 1), fontSize: 16),
+                    style: TextStyle(
+                        color: Color.fromRGBO(134, 134, 134, 1), fontSize: 16),
                   ),
                 ])),
                 SizedBox(
@@ -54,7 +57,7 @@ class forgot_password_screen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: TextField(
-                      keyboardType: TextInputType.phone,
+                      controller: _email,
                       decoration: InputDecoration(
                           suffixStyle: TextStyle(color: Colors.grey),
                           suffixIcon: Icon(
@@ -101,17 +104,119 @@ class forgot_password_screen extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      reset_email_screen()),
-
-                            );
+                            emailver(context);
                           })),
                 ),
               ]),
         ));
   }
+
+  void emailver(BuildContext context) async {
+    final multipartRequest = new http.MultipartRequest(
+        "POST",
+        Uri.parse(
+            "https://dnpprojects.com/demo/comshop/api/driverforgetPassword"));
+
+    multipartRequest.fields.addAll({
+      "email_address": _email.text,
+    });
+    http.StreamedResponse response = await multipartRequest.send();
+
+    var responseString = await response.stream.bytesToString();
+
+    if (response.statusCode == 200) {}
+    if (responseString ==
+        '{"success":"We have e-mailed your password reset Code!"}') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => otp_screen()),
+      );
+      // showDialog(
+      //   context: context,
+      //   builder: (BuildContext context) {
+      //     return AlertDialog(
+      //       title: Column(
+      //         mainAxisAlignment: MainAxisAlignment.center,
+      //         children: [
+      //           Container(
+      //             height: 80,
+      //             width: 80,
+      //             child: Image.asset(
+      //               'images/crs.png',
+      //               height: 80,
+      //               width: 80,
+      //             ),
+      //           ),
+      //           SizedBox(
+      //             height: 10,
+      //           ),
+      //           Text(
+      //             "Email Address has Already Registered",
+      //             textAlign: TextAlign.center,
+      //             style: TextStyle(fontSize: 16),
+      //           ),
+      //         ],
+      //       ),
+      //       actions: <Widget>[
+      //         FlatButton(
+      //           child: new Text("OK"),
+      //           onPressed: () {
+      //               Navigator.push(
+      //                 context,
+      //                 MaterialPageRoute(
+      //                     builder: (BuildContext context) =>
+      //                         create_acount_screen()),
+      // );
+      //           },
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // );
+    } else {
+      // showDialog(
+      //   context: context,
+      //   builder: (BuildContext context) {
+      //     return AlertDialog(
+      //       title: Column(
+      //         children: [
+      //           Container(
+      //             height: 80,
+      //             width: 80,
+      //             child: Image.asset(
+      //               'images/chk.png',
+      //               height: 80,
+      //               width: 80,
+      //             ),
+      //           ),
+      //           SizedBox(
+      //             height: 10,
+      //           ),
+      //           new Text(
+      //             "User Register Sucessfully",
+      //             textAlign: TextAlign.center,
+      //             style: TextStyle(fontSize: 16),
+      //           ),
+      //         ],
+      //       ),
+      //       actions: <Widget>[
+      //         FlatButton(
+      //           child: new Text("OK"),
+      //           onPressed: () {
+      //             Navigator.push(
+      //               context,
+      //               MaterialPageRoute(
+      //                   builder: (BuildContext context) => login_screen()),
+      //             );
+      //           },
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // );
+    }
+
+    print("response: " + responseString);
+    print("response Status: ${response.statusCode}");
+  }
 }
- 

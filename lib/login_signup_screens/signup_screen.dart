@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:checkbox_formfield/checkbox_list_tile_formfield.dart';
 import 'package:delivery_boy_application/main.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import 'welcome_listile_screen.dart';
 
 class signup_screen extends StatefulWidget {
@@ -22,6 +22,9 @@ class _signup_screenState extends State<signup_screen> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _city = TextEditingController();
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  bool _termsChecked = false;
+  // RegExp regex =
+  //     RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +73,12 @@ class _signup_screenState extends State<signup_screen> {
                                 padding: const EdgeInsets.only(left: 0),
                                 child: TextFormField(
                                   controller: _fname,
+                                  validator: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return "please enter first name";
+                                    }
+                                    return null;
+                                  },
                                   decoration: InputDecoration(
                                       labelText: 'First Name',
                                       labelStyle: TextStyle(
@@ -128,6 +137,12 @@ class _signup_screenState extends State<signup_screen> {
                                 padding: const EdgeInsets.only(left: 0),
                                 child: TextFormField(
                                   controller: _lname,
+                                  validator: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return "please enter second name";
+                                    }
+                                    return null;
+                                  },
                                   decoration: InputDecoration(
                                       labelText: 'Last Name',
                                       labelStyle: TextStyle(
@@ -183,6 +198,15 @@ class _signup_screenState extends State<signup_screen> {
                         padding: const EdgeInsets.only(left: 0),
                         child: TextFormField(
                           controller: _email,
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return "please enter email";
+                            } else if (!RegExp(r'\S+@\S+\.\S+')
+                                .hasMatch(value)) {
+                              return "Please enter a valid email address";
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                               labelText: 'Email Address',
                               labelStyle: TextStyle(
@@ -226,6 +250,12 @@ class _signup_screenState extends State<signup_screen> {
                         padding: const EdgeInsets.only(left: 0),
                         child: TextFormField(
                           controller: _phone,
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return "please enter phone Number";
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                               labelText: 'Phone Number',
                               labelStyle: TextStyle(
@@ -269,6 +299,15 @@ class _signup_screenState extends State<signup_screen> {
                         padding: const EdgeInsets.only(left: 0),
                         child: TextFormField(
                           controller: _password,
+                          obscureText: true,
+                          validator: (var value) {
+                            if (value!.isEmpty) {
+                              return "please enter pasword";
+                            } else if (value.length < 7) {
+                              return "Must be more than 7 charater";
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                               labelText: 'Password',
                               labelStyle: TextStyle(
@@ -312,6 +351,12 @@ class _signup_screenState extends State<signup_screen> {
                         padding: const EdgeInsets.only(left: 0),
                         child: TextFormField(
                           controller: _city,
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return "please ente city";
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                               labelText: 'City',
                               labelStyle: TextStyle(
@@ -342,66 +387,65 @@ class _signup_screenState extends State<signup_screen> {
                       ),
                     ),
                   ),
-                  Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Checkbox(
-                            focusColor: Color.fromRGBO(252, 186, 24, 1),
-                            hoverColor: Color.fromRGBO(252, 186, 24, 1),
-                            checkColor: Color.fromRGBO(252, 186, 24, 1),
-                            activeColor: Colors.white,
-                            value: agree,
-                            onChanged: (value) {
-                              setState(() {
-                                agree = value ?? false;
-                              });
-                            }),
-                        RichText(
-                            text: TextSpan(children: <TextSpan>[
-                          TextSpan(
-                              text: "By proceeding I agree to cupshop ",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: "\nuser Aggrement ",
+                  Center(
+                    child: CheckboxListTileFormField(
+                      checkColor: Color.fromRGBO(252, 186, 24, 1),
+                      activeColor: Colors.white,
+                      title: RichText(
+                          text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                            text: "By proceeding I agree to cupshop ",
                             style: TextStyle(
-                                color: Color.fromRGBO(252, 186, 24, 1),
+                                color: Colors.black,
                                 fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MyHomePage()),
-                                );
-                              },
-                          ),
-                          TextSpan(
-                              text: "and",
-                              style: TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: " Privacy policy ",
+                                fontWeight: FontWeight.w400)),
+                        TextSpan(
+                          text: "\nuser Aggrement ",
+                          style: TextStyle(
+                              color: Color.fromRGBO(252, 186, 24, 1),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyHomePage()),
+                              );
+                            },
+                        ),
+                        TextSpan(
+                            text: "and",
                             style: TextStyle(
-                                color: Color.fromRGBO(252, 186, 24, 1),
-                                fontSize: 14),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MyHomePage()),
-                                );
-                              },
-                          ),
-                        ])),
-                      ]),
+                                color: Colors.black87,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400)),
+                        TextSpan(
+                          text: " Privacy policy ",
+                          style: TextStyle(
+                              color: Color.fromRGBO(252, 186, 24, 1),
+                              fontSize: 14),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyHomePage()),
+                              );
+                            },
+                        ),
+                      ])),
+                      validator: (bool? value) {
+                        if (value!) {
+                          return null;
+                        } else {
+                          return 'Please accept Terms and Condition';
+                        }
+                      },
+                      autovalidateMode: AutovalidateMode.always,
+                      contentPadding: EdgeInsets.all(1),
+                    ),
+                  ),
                   Container(
                       height: 48,
                       width: 335,
@@ -436,13 +480,6 @@ class _signup_screenState extends State<signup_screen> {
                             } else {
                               print("Unsucessful");
                             }
-                            // print(_fname.text +
-                            //     _lname.text +
-                            //     _email.text +
-                            //     _phone.text +
-                            //     _password.text +
-                            //     _city.text +
-                            //     _password.text);
                           })),
                 ],
               ),
