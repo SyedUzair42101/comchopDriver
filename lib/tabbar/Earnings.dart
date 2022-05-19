@@ -47,7 +47,7 @@ class Earning extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 15),
                           child: Text(
-                            'Today',
+                            'Wallet',
                             style: TextStyle(color: Colors.white),
                           ),
                         )),

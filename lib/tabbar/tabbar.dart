@@ -8,74 +8,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 
 
-// class tabbar extends StatefulWidget {
-//   const tabbar({Key? key}) : super(key: key);
-//
-//   @override
-//   _tabbarState createState() => _tabbarState();
-// }
-//
-// class _tabbarState extends State<tabbar> {
-//   int _currentIndex = 0;
-//   final List<Widget> _children = [
-//     // home_screen1(),
-//     // SignIn(),
-//     // aboutus(),
-//     dashboard(),
-//     Earning(),
-//     history(),
-//     profile(),
-//
-//
-//   ];
-//   void onTappedBar(int index)
-//   {
-//     setState(() {
-//       _currentIndex = index;
-//     });
-//
-//   }
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body:
-//       _children[_currentIndex],
-//       bottomNavigationBar: BottomNavigationBar(
-//         onTap: onTappedBar,
-//         currentIndex: _currentIndex,
-//         backgroundColor:  Color.fromRGBO(230, 231, 232,10  ) ,
-//         selectedItemColor: Color.fromRGBO(252, 186, 24, 1) ,
-//         unselectedItemColor: Colors.black.withOpacity(.60),
-//         selectedFontSize: 10,
-//         unselectedFontSize: 8,
-//
-//         items: [
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.home),
-//             title: Text(  'Home' ),
-//
-//           ),
-//           // BottomNavigationBarItem(
-//           //     icon: new Icon(Icons.home),
-//           //     title: new Text("DemoHome")
-//           // ),
-//           BottomNavigationBarItem(
-//             icon:  Icon(Icons. account_balance_wallet_rounded),
-//             title: Text(  'Earning' ) ,      ),
-//           BottomNavigationBarItem(
-//
-//               icon: Icon(Icons. history),
-//               title: Text(  'Earning' )
-//           ),
-//           BottomNavigationBarItem(
-//               icon:  Icon(Icons. person),
-//               title: Text(  'Profile' )
-//               ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+
 
 
 class tab_bar_screen extends StatefulWidget {

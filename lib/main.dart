@@ -1,10 +1,23 @@
 import 'package:delivery_boy_application/login_signup_screens/signup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
+import 'http_services/htt_services.dart';
 import 'login_signup_screens/login_screen.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor:Colors.transparent,
+  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => http_service()),
+      ],
+      child:MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

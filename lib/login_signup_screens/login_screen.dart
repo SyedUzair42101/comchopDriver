@@ -1,9 +1,11 @@
 import 'package:delivery_boy_application/cards_screen/idcard_backside.dart';
+import 'package:delivery_boy_application/http_services/htt_services.dart';
 import 'package:delivery_boy_application/login_signup_screens/forgot_password_screen.dart';
 import 'package:delivery_boy_application/tabbar/tabbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class login_screen extends StatefulWidget {
@@ -14,12 +16,20 @@ class login_screen extends StatefulWidget {
 }
 
 class _login_screenState extends State<login_screen> {
+
+
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     bool _isObscure = true;
-
+    var http_services =Provider.of<http_service>(context);
     return Scaffold(
         backgroundColor: Color.fromRGBO(255, 255, 255, 1),
         appBar: AppBar(
@@ -55,28 +65,28 @@ class _login_screenState extends State<login_screen> {
                   ),
                   RichText(
                       text: TextSpan(children: <TextSpan>[
-                    TextSpan(
-                      text: " For sign in, Or ",
-                      style: TextStyle(
-                          color: Color.fromRGBO(134, 134, 134, 1),
-                          fontSize: 16),
-                    ),
-                    TextSpan(
-                      text: " Create new account. ",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color.fromRGBO(252, 186, 24, 1),
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => id_card_backside()),
-                          );
-                        },
-                    ),
-                  ])),
+                        TextSpan(
+                          text: " For sign in, Or ",
+                          style: TextStyle(
+                              color: Color.fromRGBO(134, 134, 134, 1),
+                              fontSize: 16),
+                        ),
+                        TextSpan(
+                          text: " Create new account. ",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color.fromRGBO(252, 186, 24, 1),
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => id_card_backside()),
+                              );
+                            },
+                        ),
+                      ])),
                   SizedBox(
                     height: 30,
                   ),
@@ -177,7 +187,7 @@ class _login_screenState extends State<login_screen> {
                     height: 5,
                   ),
                   Center(
-                    child: Container(
+                    child:  Container(
                         height: 50,
                         width: 290,
                         child: MaterialButton(
@@ -192,14 +202,9 @@ class _login_screenState extends State<login_screen> {
                               ),
                             ),
                             onPressed: () {
-                              //     _login();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        tab_bar_screen()),
-                              );
-                            })),
+                              http_services.login(_email.text,_password.text,context);
+                            }
+                            )),
                   ),
                   SizedBox(
                     height: 5,
@@ -209,33 +214,4 @@ class _login_screenState extends State<login_screen> {
         ));
   }
 
-  Future _login() async {
-    final _prefs = SharedPreferences.getInstance();
-    final SharedPreferences prefs = await _prefs;
-    final MultipartRequest = new http.MultipartRequest("POST",
-        Uri.parse("https://dnpprojects.com/demo/comshop/api/driverlogin"));
-    MultipartRequest.fields.addAll({
-      "email_address": _email.text,
-      "password": _password.text,
-    });
-    http.StreamedResponse response = await MultipartRequest.send();
-    var resposeString = await response.stream.bytesToString();
-
-    final gettoken = prefs.getString('new');
-    print(gettoken);
-    if (response.statusCode == 200) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => tab_bar_screen(
-                  // finalToken: gettoken,
-                  )));
-    } else {
-      return CircularProgressIndicator();
-    }
-
-    print(response.statusCode);
-    print(resposeString);
-    print(response);
-  }
 }

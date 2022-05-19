@@ -32,13 +32,15 @@ dependencies:
   flutter_font_icons: ^2.2.4
   google_maps_flutter: ^2.0.8
   image_picker: ^0.8.2
-  http: ^0.13.4
-  shared_preferences: ^2.0.13
+  http: ^0.13.1
+  shared_preferences: ^2.0.7
   modal_progress_hud_nsn: ^0.1.0-nullsafety-1
   flutter_absolute_path: ^1.0.6
   checkbox_formfield: ^0.2.0
   provider: ^6.0.2
   pin_code_fields: ^7.4.0
+  geolocator: ^8.0.5
+  location: ^4.0.2
 
 dev_dependencies:
   flutter_test:
