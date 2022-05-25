@@ -1,18 +1,28 @@
+import 'package:delivery_boy_application/http_services/htt_services.dart';
+import 'package:delivery_boy_application/models/profileDetails.dart';
+import 'package:delivery_boy_application/widgets/dashboard_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 
 class profile_screen extends StatelessWidget {
   const profile_screen({Key? key}) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<http_service>(context);
+    TextEditingController _nameController =TextEditingController() ;
+    TextEditingController _email =TextEditingController() ;
+    TextEditingController _password =TextEditingController() ;
     return Scaffold(
       backgroundColor: Color.fromRGBO(255, 255, 255, 1),
 
       appBar: AppBar(
 
-
+         // Text( 'profile',style: TextStyle(fontWeight: FontWeight.w700,fontSize: 27),)),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: Color.fromRGBO(255, 255, 255, 1),
@@ -27,74 +37,81 @@ class profile_screen extends StatelessWidget {
           ),
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.only(left: 10, right: 10, ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+      body: SingleChildScrollView(
+        child: FutureBuilder<driverProfile?>(
+            future:provider.driverprofile(),
+            builder: (c,    snapshot) {
+              var a =  snapshot.data!.data![0].firstName??_nameController.text;
+              var b =  snapshot.data!.data![0].lastName ??_nameController.text;
+              if (!snapshot.hasData)
 
-          children: [
-            Center(
-                child:
-                Text( 'profile',style: TextStyle(fontWeight: FontWeight.w700,fontSize: 27),)),
-            SizedBox(
-              height: 15,
-            ),
-            Center(
-              child: CircleAvatar(
-                radius: 55,
-                backgroundColor: Color(0xffFDCF09),
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage('images/person.png'),
-                ),
-              ),
-            ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Full name',
-                labelStyle: TextStyle(
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Password',
-                labelStyle: TextStyle(
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Phone',
-                labelStyle: TextStyle(
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Email',
-                labelStyle: TextStyle(
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-          ],
-        ),
+                return Align(
+                    alignment: Alignment.center,
+                    child: dashboardwidget().cicularbar());
+              _nameController.text  = a+" "+b ;
+
+              _email.text  = snapshot.data!.data![0].emailAddress??_nameController.text;
+              _password.text  = snapshot.data!.data![0].phoneNumber??_nameController.text;
+
+              if (snapshot.hasData)
+                return  Container(
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height,
+                  padding: EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+
+                    children: [
+                      TextField(
+                        readOnly: true,
+                        controller:_nameController,
+                        decoration: InputDecoration(
+
+                          labelText: 'Full name',
+                          labelStyle: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      TextField(
+                        readOnly: true,
+                        controller:_email,
+                        decoration: InputDecoration(
+                          labelText: 'Email address',
+                          labelStyle: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      TextField( readOnly: true,
+                        controller: _password,
+                        style: TextStyle(color: Colors.grey),
+                        decoration: InputDecoration(
+                          labelText: 'Phone number',
+                          labelStyle: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+
+
+                    ],
+                  ),
+                );
+              if (snapshot.hasError) print(snapshot.error.toString());
+              return Align(
+                  alignment: Alignment.center,
+                  child: dashboardwidget().cicularbar());
+            } ),
       ),
     );
   }

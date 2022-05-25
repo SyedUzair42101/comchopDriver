@@ -2,6 +2,7 @@ import 'package:delivery_boy_application/details/alertbox.dart';
 import 'package:delivery_boy_application/login_signup_screens/login_screen.dart';
 import 'package:delivery_boy_application/settings_screen/notifications.dart';
 import 'package:delivery_boy_application/settings_screen/profile_screens.dart';
+import 'package:delivery_boy_application/tabbar/changePassword.dart';
 import 'package:flutter/material.dart';
 
 class profile extends StatelessWidget {
@@ -40,55 +41,99 @@ class profile extends StatelessWidget {
             'profile',
             style: TextStyle(fontWeight: FontWeight.w700, fontSize: 27),
           )),
-          Container(
-            margin: EdgeInsets.all(5),
-            padding: EdgeInsets.all(10),
-            height: 120,
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 100,
-                      width: 100,
-                      child: Center(child: Image.asset('images/person.png')),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Cameron Williamson',
-                          style: TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                        Text(
-                          'sumanyak@gmail.com',
-                          style: TextStyle(
-                              color: Color.fromRGBO(136, 136, 136, 1)),
-                        ),
-                        Text(
-                          '+91 xxxxxxxxxxx',
-                          style: TextStyle(
-                              color: Color.fromRGBO(136, 136, 136, 1)),
-                        ),
-                        Text(
-                          '#21-22-31, Masab Tank',
-                          style: TextStyle(
-                              color: Color.fromRGBO(136, 136, 136, 1)),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => profile_screen()),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.all(10),
+              height: 50,
+              width: MediaQuery.of(context).size.width,
+              decoration: new BoxDecoration(
+                  color: Color.fromRGBO(244, 244, 244, 1),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.person,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Profile Information',
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                  Icon(
+                    Icons.chevron_right_sharp,
+                    color: Colors.black,
+                  ),
+                ],
+              ),
             ),
           ),
+
+
+
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => change_password()),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.all(10),
+              height: 50,
+              width: MediaQuery.of(context).size.width,
+              decoration: new BoxDecoration(
+                  color: Color.fromRGBO(244, 244, 244, 1),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.lock,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Change Pasword',
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                  Icon(
+                    Icons.chevron_right_sharp,
+                    color: Colors.black,
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+
+
+
+
+
           InkWell(
             onTap: () {
               Navigator.push(
@@ -131,48 +176,7 @@ class profile extends StatelessWidget {
               ),
             ),
           ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => profile_screen()),
-              );
-            },
-            child: Container(
-              margin: EdgeInsets.all(5),
-              padding: EdgeInsets.all(10),
-              height: 50,
-              width: MediaQuery.of(context).size.width,
-              decoration: new BoxDecoration(
-                  color: Color.fromRGBO(244, 244, 244, 1),
-                  borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.settings,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        'Setting',
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  ),
-                  Icon(
-                    Icons.chevron_right_sharp,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
-            ),
-          ),
+
           InkWell(
             onTap: () {
               modal().showAlertDialog(context);

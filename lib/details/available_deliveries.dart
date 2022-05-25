@@ -63,7 +63,7 @@ class avilable_delievries extends StatelessWidget {
                          return  Container(
                            margin: EdgeInsets.all(10),
                            padding: EdgeInsets.all(10),
-                           height: 130,
+                           height: 143,
                            width: MediaQuery.of(context).size.width,
                            decoration: new BoxDecoration(
                                color: Color.fromRGBO(244, 244, 244, 1),
@@ -148,7 +148,7 @@ class avilable_delievries extends StatelessWidget {
                                  height: 15,
                                ),
                                Container(
-                                 height: 50,
+                                 height: 63,
                                  width: MediaQuery.of(context).size.width,
                                  child: Column(
                                    crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,20 +164,20 @@ class avilable_delievries extends StatelessWidget {
                                            color: Color.fromRGBO(252, 186, 24, 1),
                                            size: 15,
                                          ),
-                                         Text(
+                                         SizedBox(width: 7,),
+                                         Expanded(
+                                           child: Text(
 
-                                           '${snap.data!.data![i].order!.restaurant!.address}',
-                                           style: TextStyle(
+                                             '${snap.data!.data![i].order!.restaurant!.address}',
+                                             style: TextStyle(
 
-                                               fontWeight: FontWeight.w700,
-                                               fontSize: 12),
+                                                 fontWeight: FontWeight.w700,
+                                                 fontSize: 12),
+                                           ),
                                          ),
                                        ],
                                      ),
-                                     Icon(
-                                       Icons.more_vert,
-                                       size: 15,
-                                     ),
+                                   SizedBox(height: 15,),
                                      Row(
                                        crossAxisAlignment:
                                        CrossAxisAlignment.start,
@@ -192,6 +192,7 @@ class avilable_delievries extends StatelessWidget {
                                                Color.fromRGBO(252, 186, 24, 1),
                                                size: 15,
                                              ),
+                                             SizedBox(width: 7,),
                                              Text(
                                                '${snap.data!.data![i].order!.buyer!.userAddress!.address}',
                                                style: TextStyle(

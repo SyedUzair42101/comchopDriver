@@ -1,6 +1,11 @@
 import 'dart:convert';
 
 import 'package:delivery_boy_application/models/models.dart';
+import 'package:delivery_boy_application/models/orderDetails.dart';
+import 'package:delivery_boy_application/models/profileDetails.dart';
+import 'package:delivery_boy_application/models/walletModel.dart';
+import 'package:delivery_boy_application/models/walletModel.dart';
+import 'package:delivery_boy_application/models/walletModel.dart';
 import 'package:delivery_boy_application/tabbar/tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,8 +20,7 @@ class http_service with ChangeNotifier{
   bool islogin = false;
 
 
-  void login(username,password,BuildContext context)
-  async {
+  void login(username,password,BuildContext context) async {
     notifyListeners();
       islogin = true;
       final SharedPreferences prefs = await _prefs;
@@ -159,6 +163,137 @@ Future<orderview?>  Showorders()async{
     }
 
   }
+
+  Future<wallet?>  Wallet()async{
+    try {
+      final SharedPreferences prefs = await _prefs;
+      final gettoken = prefs.getString('new');
+      var userHeader = {
+        "Accept": "application/json",
+        'Authorization': 'Bearer $gettoken',
+      };
+      final response = await http.get(
+        Uri.parse(
+          '${baseurl}ShowdriverWallet',
+        ),
+        headers: userHeader,
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        var datas = (jsonDecode(response.body));
+        var responsedata =  wallet.fromJson(datas);
+        return responsedata;
+      }
+      else{
+        return null;
+      }
+    } on Exception catch (exception) {
+      return null;
+    } catch (error) {
+      print(error.toString());
+      return null;
+    }
+
+  }
+
+  Future<completeOrder?>  completeorder()async{
+    try {
+      final SharedPreferences prefs = await _prefs;
+      final gettoken = prefs.getString('new');
+      var userHeader = {
+        "Accept": "application/json",
+        'Authorization': 'Bearer $gettoken',
+      };
+      final response = await http.get(
+        Uri.parse(
+          '${baseurl}complete_orderlist',
+        ),
+        headers: userHeader,
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        var datas = (jsonDecode(response.body));
+        var responsedata = completeOrder.fromJson(datas);
+        return responsedata;
+      }
+      else{
+        return null;
+      }
+    } on Exception catch (exception) {
+      return null;
+    } catch (error) {
+      print(error.toString());
+      return null;
+    }
+
+  }
+
+  Future<driverProfile?>  driverprofile()async{
+    try {
+      final SharedPreferences prefs = await _prefs;
+      final gettoken = prefs.getString('new');
+      var userHeader = {
+        "Accept": "application/json",
+        'Authorization': 'Bearer $gettoken',
+      };
+      final response = await http.get(
+        Uri.parse(
+          '${baseurl}driverProfile',
+        ),
+        headers: userHeader,
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        var datas = (jsonDecode(response.body));
+        var responsedata = driverProfile.fromJson(datas);
+        return responsedata;
+      }
+      else{
+        return null;
+      }
+    } on Exception catch (exception) {
+      return null;
+    } catch (error) {
+      print(error.toString());
+      return null;
+    }
+
+  }
+
+
+  void changePassword(password,newpassword,confirmpassword,BuildContext context) async {
+    notifyListeners();
+    islogin = true;
+    final SharedPreferences prefs = await _prefs;
+    final gettoken = prefs.getString('new');
+    var userHeader = {
+      "Accept": "application/json",
+      'Authorization': 'Bearer $gettoken',
+    };
+    final response = await http.post(
+      Uri.parse(
+        '${baseurl}driverchangePassword?old_password=$password&password=$newpassword&confirm_password=$confirmpassword',
+
+      ),
+      headers: userHeader,
+    );
+    if (response.statusCode == 200) {
+      var datas = (jsonDecode(response.body));
+      print(datas);
+      notifyListeners();
+      return datas;
+    }
+    else {
+      islogin = false;
+      notifyListeners();
+    }
+
+
+  }
+
+
+
+
 
 
   }

@@ -18,14 +18,17 @@ class dashboard extends StatefulWidget {
 
 class _dashboardState extends State<dashboard> {
 
+
+  late Position position;
+
   bool isSwitched = false;
   var textValue = 'You are offline';
    int? status ;
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
-  static const LatLng _center = const LatLng(45.521563, -122.677433);
+  static const LatLng _center = const LatLng(24.986557, 67.0644278);
 
-  final Set<Marker> _markers = {};
+  // final Set<Marker> _markers = {};
 
   void toggleSwitch(bool value,) {
 
@@ -48,29 +51,67 @@ class _dashboardState extends State<dashboard> {
       print('You are offline');
     }
   }
+  void getLocation()async{
+    Position res =await Geolocator.getCurrentPosition();
+    setState(() {
+      position=res;
 
-
-@override
-  void initState() {
-  location_data().currentlocation();
-
-
-  // TODO: implement initState
-    super.initState();
+    });
   }
+  @override
+  void initState() {
+    location_data().currentlocation();
+    // TODO: implement initState
+    super.initState();
+    getLocation();
+
+
+  }
+  final List<Marker> _markers=<Marker>[
+    Marker(
+        markerId: MarkerId('1'),
+  position: LatLng(24.986557, 67.0644278),
+     // position: LatLng(http_service().latitude, http_service().longtitude),
+        infoWindow: InfoWindow(
+            title: "j"
+        )
+
+    )
+  ];
+
+
+
+  Future <Position> getUserLocation() async{
+    await Geolocator.requestPermission().then((value) {
+
+    }).onError((error, stackTrace)  async{
+      await Geolocator.requestPermission();
+    });
+    return await Geolocator.getCurrentPosition();
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
         body: Stack(
       children: [
         GoogleMap(
           mapType: MapType.normal,
+onMapCreated: (GoogleMapController controller){
+            _controller.complete(controller);
+},
+markers: Set<Marker>.of(_markers),
           initialCameraPosition: CameraPosition(
             target: _center,
-            zoom: 11.0,
+            zoom: 14.0,
+
           ),
-          zoomControlsEnabled: false,
-          zoomGesturesEnabled: false,
+          zoomControlsEnabled: true,
+          zoomGesturesEnabled: true,
         ),
         SafeArea(
           child: Padding(
@@ -123,7 +164,6 @@ class _dashboardState extends State<dashboard> {
                   ),
                   IconButton(
                       onPressed: () {
-                        // location_data().currentlocation();
 
                         Navigator.push(
                           context,
@@ -144,4 +184,7 @@ class _dashboardState extends State<dashboard> {
       ],
     ));
   }
+
+
+
 }

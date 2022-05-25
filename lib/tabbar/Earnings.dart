@@ -1,10 +1,15 @@
+import 'package:delivery_boy_application/http_services/htt_services.dart';
+import 'package:delivery_boy_application/models/walletModel.dart';
+import 'package:delivery_boy_application/widgets/dashboard_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Earning extends StatelessWidget {
   const Earning({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<http_service>(context);
     return Scaffold(
         backgroundColor: Color.fromRGBO(255, 255, 255, 1),
         appBar: AppBar(
@@ -33,7 +38,7 @@ class Earning extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
@@ -46,95 +51,70 @@ class Earning extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 15),
-                          child: Text(
-                            'Wallet',
-                            style: TextStyle(color: Colors.white),
+                          child: Center(
+                            child: Text(
+                              'Wallet',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         )),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    height: 80,
-                    width: 150,
-                    decoration: new BoxDecoration(
-                        color: Color.fromRGBO(244, 244, 244, 1),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Today'),
-                        Text(
-                          '\$345.00',
-                          style: TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                        Text('02 feb, 2021'),
-                      ],
-                    ),
-                  ),
-                  for (var i = 0; i < 6; i++)
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      height: 90,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: new BoxDecoration(
-                          color: Color.fromRGBO(244, 244, 244, 1),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Order ID: ',
-                                style: TextStyle(
-                                    color: Color.fromRGBO(136, 136, 136, 1)),
+                  SizedBox(height:20),
+                  FutureBuilder<wallet?>(
+                      future: provider.Wallet(),
+                      builder: (c,   snap) {
+                        if (snap.connectionState == ConnectionState.waiting)
+                          return Center(child: dashboardwidget().cicularbar());
+                        if (snap.hasData) {
+                          return
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 20,right: 20),
+                                child: Container(
+                                    margin: EdgeInsets.all(10),
+                                    padding: EdgeInsets.all(10),
+                                    height: 143,
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: new BoxDecoration(
+                                        color: Color.fromRGBO(244, 244, 244, 1),
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(10),
+                                          height: 100,
+                                          width: 170,
+                                          decoration: new BoxDecoration(
+                                              color: Color.fromRGBO(244, 244, 244, 1),
+                                              borderRadius: BorderRadius.circular(10)),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Text('Total',
+                                                style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+                                              Text('Payable: \$${snap.data!.driverWallet!.payable}'   ,
+                                                style: TextStyle(fontSize: 17),),
+                                              Text('Receivable: \$${snap.data!.driverWallet!.receivable}'   ,
+                                                style: TextStyle(fontSize: 17),),
+
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+
+                                    )
+
+
+
+                                ),
                               ),
-                              Text(
-                                'ACR145786',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Payment :',
-                                style: TextStyle(
-                                    color: Color.fromRGBO(136, 136, 136, 1)),
-                              ),
-                              Text(
-                                ' Online',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    'Date:  ',
-                                    style: TextStyle(
-                                        color:
-                                            Color.fromRGBO(136, 136, 136, 1)),
-                                  ),
-                                  Text(
-                                    '02 feb, 2021',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w700),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                '\$345.00',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                            );
+                        } else {
+                          return dashboardwidget().cicularbar();
+                        }
+                      })
+
                 ],
               ),
             ),

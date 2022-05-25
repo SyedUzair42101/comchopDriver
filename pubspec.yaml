@@ -41,6 +41,7 @@ dependencies:
   pin_code_fields: ^7.4.0
   geolocator: ^8.0.5
   location: ^4.0.2
+  flutter_polyline_points: ^1.0.0
 
 dev_dependencies:
   flutter_test:
