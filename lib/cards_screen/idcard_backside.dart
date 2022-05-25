@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:delivery_boy_application/cards_screen/driving_license_front.dart';
+import 'package:delivery_boy_application/cards_screen/health_card.dart';
 import 'package:delivery_boy_application/login_signup_screens/welcome_listile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -120,8 +121,7 @@ class _id_card_backsideState extends State<id_card_backside> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              driving_license_front(
+                          builder: (BuildContext context) => health_card(
                                 Frontimage: widget.Frontimage,
                                 Backimage: imageBack,
                                 firstname: widget.firstname,

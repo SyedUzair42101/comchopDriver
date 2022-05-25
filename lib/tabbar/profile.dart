@@ -11,10 +11,12 @@ class profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          'History',
-          style: TextStyle(color: Colors.black),
+          'Profile',
+          style: TextStyle(
+              fontWeight: FontWeight.w700, fontSize: 27, color: Colors.black),
         ),
         centerTitle: true,
         elevation: 0.0,
@@ -29,18 +31,10 @@ class profile extends StatelessWidget {
           ),
         ),
       ),
-      body:
-      Container(
-        padding: EdgeInsets.only(
-          left: 10,
-          right: 10,
-        ),
+      body: Container(
+        padding: EdgeInsets.only(left: 10, right: 10, top: 30),
         child: Column(children: [
-          Center(
-              child: Text(
-            'profile',
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 27),
-          )),
+          Center(),
           InkWell(
             onTap: () {
               Navigator.push(
@@ -52,7 +46,7 @@ class profile extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.all(5),
               padding: EdgeInsets.all(10),
-              height: 50,
+              height: 60,
               width: MediaQuery.of(context).size.width,
               decoration: new BoxDecoration(
                   color: Color.fromRGBO(244, 244, 244, 1),
@@ -64,14 +58,17 @@ class profile extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.person,
-                        color: Colors.black,
+                        color: Color.fromRGBO(252, 186, 24, 1),
                       ),
                       SizedBox(
-                        width: 5,
+                        width: 10,
                       ),
                       Text(
                         'Profile Information',
-                        style: TextStyle(fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromARGB(255, 121, 119, 119),
+                            fontSize: 16),
                       ),
                     ],
                   ),
@@ -83,9 +80,6 @@ class profile extends StatelessWidget {
               ),
             ),
           ),
-
-
-
           InkWell(
             onTap: () {
               Navigator.push(
@@ -97,7 +91,7 @@ class profile extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.all(5),
               padding: EdgeInsets.all(10),
-              height: 50,
+              height: 60,
               width: MediaQuery.of(context).size.width,
               decoration: new BoxDecoration(
                   color: Color.fromRGBO(244, 244, 244, 1),
@@ -109,14 +103,17 @@ class profile extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.lock,
-                        color: Colors.black,
+                        color: Color.fromRGBO(252, 186, 24, 1),
                       ),
                       SizedBox(
-                        width: 5,
+                        width: 10,
                       ),
                       Text(
                         'Change Pasword',
-                        style: TextStyle(fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromARGB(255, 121, 119, 119),
+                            fontSize: 16),
                       ),
                     ],
                   ),
@@ -128,12 +125,6 @@ class profile extends StatelessWidget {
               ),
             ),
           ),
-
-
-
-
-
-
           InkWell(
             onTap: () {
               Navigator.push(
@@ -145,7 +136,7 @@ class profile extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.all(5),
               padding: EdgeInsets.all(10),
-              height: 50,
+              height: 60,
               width: MediaQuery.of(context).size.width,
               decoration: new BoxDecoration(
                   color: Color.fromRGBO(244, 244, 244, 1),
@@ -157,14 +148,17 @@ class profile extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.notifications,
-                        color: Colors.black,
+                        color: Color.fromRGBO(252, 186, 24, 1),
                       ),
                       SizedBox(
-                        width: 5,
+                        width: 10,
                       ),
                       Text(
                         'Notification',
-                        style: TextStyle(fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromARGB(255, 121, 119, 119),
+                            fontSize: 16),
                       ),
                     ],
                   ),
@@ -176,11 +170,9 @@ class profile extends StatelessWidget {
               ),
             ),
           ),
-
           InkWell(
             onTap: () {
               modal().showAlertDialog(context);
-
             },
             child: Container(
               margin: EdgeInsets.all(5),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:delivery_boy_application/cards_screen/health_card.dart';
 import 'package:delivery_boy_application/login_signup_screens/login_screen.dart';
 import 'package:delivery_boy_application/login_signup_screens/signup_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class driving_license_backside extends StatefulWidget {
   final Frontimage;
   final Backimage;
   final FrontDimage;
+  final healthimage;
   const driving_license_backside(
       {Key? key,
       this.firstname,
@@ -28,7 +30,8 @@ class driving_license_backside extends StatefulWidget {
       this.confirmpassword,
       this.Frontimage,
       this.Backimage,
-      this.FrontDimage})
+      this.FrontDimage,
+      this.healthimage})
       : super(key: key);
   @override
   _driving_license_backsideState createState() =>
@@ -116,18 +119,20 @@ class _driving_license_backsideState extends State<driving_license_backside> {
                 child: InkWell(
                   onTap: () {
                     uploadImage();
-
-                    // print(widget.Frontimage.toString() +
-                    //     widget.Backimage.toString() +
-                    //     widget.FrontDimage.toString() +
-                    //     drivingBack.toString() +
-                    //     widget.firstname +
-                    //     widget.lastname +
-                    //     widget.emailaddress +
-                    //     widget.phonenumber +
-                    //     widget.password +
-                    //     widget.cityid +
-                    //     widget.confirmpassword);
+                    // setState(() {
+                    //   print(widget.Frontimage.toString() +
+                    //       widget.Backimage.toString() +
+                    //       widget.FrontDimage.toString() +
+                    //       drivingBack.toString() +
+                    //       widget.healthimage.toString() +
+                    //       widget.firstname +
+                    //       widget.lastname +
+                    //       widget.emailaddress +
+                    //       widget.phonenumber +
+                    //       widget.password +
+                    //       widget.cityid +
+                    //       widget.confirmpassword);
+                    // });
                   },
                   child: Container(
                       height: 48,
@@ -176,6 +181,12 @@ class _driving_license_backsideState extends State<driving_license_backside> {
       await http.MultipartFile.fromPath(
         'card_back',
         widget.Backimage!.path,
+      ),
+    );
+    multipartRequest.files.add(
+      await http.MultipartFile.fromPath(
+        'vaccine_card',
+        widget.healthimage!.path,
       ),
     );
     multipartRequest.files.add(

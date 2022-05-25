@@ -1,11 +1,9 @@
-import 'dart:io';
-
-import 'package:delivery_boy_application/cards_screen/driving_license_backside.dart';
-import 'package:delivery_boy_application/login_signup_screens/welcome_listile_screen.dart';
+import 'package:delivery_boy_application/cards_screen/driving_license_front.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
-class driving_license_front extends StatefulWidget {
+class health_card extends StatefulWidget {
   final firstname;
   final lastname;
   final emailaddress;
@@ -15,8 +13,7 @@ class driving_license_front extends StatefulWidget {
   final confirmpassword;
   final Frontimage;
   final Backimage;
-  final healthimage;
-  const driving_license_front(
+  const health_card(
       {Key? key,
       this.firstname,
       this.lastname,
@@ -25,24 +22,23 @@ class driving_license_front extends StatefulWidget {
       this.password,
       this.cityid,
       this.confirmpassword,
-      this.Backimage,
-      this.healthimage,
-      this.Frontimage})
+      this.Frontimage,
+      this.Backimage})
       : super(key: key);
 
   @override
-  State<driving_license_front> createState() => _driving_license_frontState();
+  State<health_card> createState() => _health_cardState();
 }
 
-class _driving_license_frontState extends State<driving_license_front> {
-  File? drivingFront;
+class _health_cardState extends State<health_card> {
+  File? health;
   void _getFromCamera() async {
     XFile? pickedimage = await ImagePicker()
         .pickImage(source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
-      drivingFront = File(pickedimage!.path);
-      print(drivingFront);
+      health = File(pickedimage!.path);
+      print(health);
     });
   }
 
@@ -71,7 +67,7 @@ class _driving_license_frontState extends State<driving_license_front> {
             children: [
               Center(
                   child: Text(
-                'Take a photo of your Driving License',
+                'Take a photo of your Health Card',
                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 30),
               )),
               SizedBox(
@@ -88,7 +84,7 @@ class _driving_license_frontState extends State<driving_license_front> {
               Container(
                   height: 220,
                   width: 310,
-                  child: drivingFront == null
+                  child: health == null
                       ? InkWell(
                           onTap: () {
                             _getFromCamera();
@@ -101,7 +97,7 @@ class _driving_license_frontState extends State<driving_license_front> {
                           ),
                         )
                       : Image.file(
-                          drivingFront!,
+                          health!,
                           fit: BoxFit.fill,
                           height: 220,
                           width: 310,
@@ -126,11 +122,10 @@ class _driving_license_frontState extends State<driving_license_front> {
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              driving_license_backside(
+                              driving_license_front(
                                 Frontimage: widget.Frontimage,
                                 Backimage: widget.Backimage,
-                                healthimage: widget.healthimage,
-                                FrontDimage: drivingFront,
+                                healthimage: health,
                                 firstname: widget.firstname,
                                 lastname: widget.lastname,
                                 emailaddress: widget.emailaddress,
