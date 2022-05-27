@@ -32,12 +32,12 @@ class Data {
 
   Data(
       {this.id,
-        this.driverId,
-        this.orderId,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.order});
+      this.driverId,
+      this.orderId,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.order});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -81,18 +81,18 @@ class Order {
 
   Order(
       {this.id,
-        this.userId,
-        this.restaurantId,
-        this.subTotal,
-        this.vatValue,
-        this.totalPrice,
-        this.paymentMethod,
-        this.specialInstructions,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.restaurant,
-        this.buyer});
+      this.userId,
+      this.restaurantId,
+      this.subTotal,
+      this.vatValue,
+      this.totalPrice,
+      this.paymentMethod,
+      this.specialInstructions,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.restaurant,
+      this.buyer});
 
   Order.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -154,20 +154,20 @@ class Restaurant {
 
   Restaurant(
       {this.id,
-        this.name,
-        this.phone,
-        this.email,
-        this.ownerName,
-        this.logoImg,
-        this.password,
-        this.address,
-        this.latitude,
-        this.longitude,
-        this.serviceRadius,
-        this.serviceStatus,
-        this.status,
-        this.createdAt,
-        this.updatedAt});
+      this.name,
+      this.phone,
+      this.email,
+      this.ownerName,
+      this.logoImg,
+      this.password,
+      this.address,
+      this.latitude,
+      this.longitude,
+      this.serviceRadius,
+      this.serviceStatus,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
 
   Restaurant.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -217,24 +217,24 @@ class Buyer {
   String? facebookId;
   String? googleId;
   int? status;
-  Null? otpByemail;
+  int? otpByemail;
   String? createdAt;
   String? updatedAt;
   UserAddress? userAddress;
 
   Buyer(
       {this.id,
-        this.name,
-        this.email,
-        this.phone,
-        this.emailVerifiedAt,
-        this.facebookId,
-        this.googleId,
-        this.status,
-        this.otpByemail,
-        this.createdAt,
-        this.updatedAt,
-        this.userAddress});
+      this.name,
+      this.email,
+      this.phone,
+      this.emailVerifiedAt,
+      this.facebookId,
+      this.googleId,
+      this.status,
+      this.otpByemail,
+      this.createdAt,
+      this.updatedAt,
+      this.userAddress});
 
   Buyer.fromJson(Map<String, dynamic> json) {
     id = json['id'];

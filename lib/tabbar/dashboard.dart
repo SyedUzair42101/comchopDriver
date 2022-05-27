@@ -17,23 +17,21 @@ class dashboard extends StatefulWidget {
 }
 
 class _dashboardState extends State<dashboard> {
-
-
   late Position position;
 
   bool isSwitched = false;
   var textValue = 'You are offline';
-   int? status ;
+  int? status;
   final Completer<GoogleMapController> _controller = Completer();
 
   static const LatLng _center = const LatLng(24.986557, 67.0644278);
 
   // final Set<Marker> _markers = {};
 
-  void toggleSwitch(bool value,) {
-
+  void toggleSwitch(
+    bool value,
+  ) {
     if (isSwitched == false) {
-
       setState(() {
         isSwitched = true;
         textValue = 'You are online';
@@ -51,64 +49,53 @@ class _dashboardState extends State<dashboard> {
       print('You are offline');
     }
   }
-  void getLocation()async{
-    Position res =await Geolocator.getCurrentPosition();
-    setState(() {
-      position=res;
 
+  void getLocation() async {
+    Position res = await Geolocator.getCurrentPosition();
+    setState(() {
+      position = res;
     });
   }
+
   @override
   void initState() {
     location_data().currentlocation();
     // TODO: implement initState
     super.initState();
     getLocation();
-
-
   }
-  final List<Marker> _markers=<Marker>[
+
+  final List<Marker> _markers = <Marker>[
     Marker(
         markerId: MarkerId('1'),
-  position: LatLng(24.986557, 67.0644278),
-     // position: LatLng(http_service().latitude, http_service().longtitude),
-        infoWindow: InfoWindow(
-            title: "j"
-        )
-
-    )
+        position: LatLng(24.986557, 67.0644278),
+        // position: LatLng(http_service().latitude, http_service().longtitude),
+        infoWindow: InfoWindow(title: "j"))
   ];
 
-
-
-  Future <Position> getUserLocation() async{
-    await Geolocator.requestPermission().then((value) {
-
-    }).onError((error, stackTrace)  async{
+  Future<Position> getUserLocation() async {
+    await Geolocator.requestPermission()
+        .then((value) {})
+        .onError((error, stackTrace) async {
       await Geolocator.requestPermission();
     });
     return await Geolocator.getCurrentPosition();
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
         body: Stack(
       children: [
         GoogleMap(
           mapType: MapType.normal,
-onMapCreated: (GoogleMapController controller){
+          onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
-},
-markers: Set<Marker>.of(_markers),
+          },
+          markers: Set<Marker>.of(_markers),
           initialCameraPosition: CameraPosition(
             target: _center,
             zoom: 14.0,
-
           ),
           zoomControlsEnabled: true,
           zoomGesturesEnabled: true,
@@ -136,7 +123,6 @@ markers: Set<Marker>.of(_markers),
                       style: TextStyle(fontSize: 15),
                     ),
                     Switch(
-
                       onChanged: toggleSwitch,
                       value: isSwitched,
                       activeColor: Colors.white,
@@ -164,7 +150,6 @@ markers: Set<Marker>.of(_markers),
                   ),
                   IconButton(
                       onPressed: () {
-
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -184,7 +169,4 @@ markers: Set<Marker>.of(_markers),
       ],
     ));
   }
-
-
-
 }

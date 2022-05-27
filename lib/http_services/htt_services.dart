@@ -11,48 +11,45 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-
-class http_service with ChangeNotifier{
+class http_service with ChangeNotifier {
   var latitude;
   var longtitude;
   var baseurl = 'https://dnpprojects.com/demo/comshop/api/';
   final _prefs = SharedPreferences.getInstance();
   bool islogin = false;
 
-
-  void login(username,password,BuildContext context) async {
+  void login(username, password, BuildContext context) async {
     notifyListeners();
-      islogin = true;
-      final SharedPreferences prefs = await _prefs;
-      var userHeader = {"Accept": "application/json"};
-      final response = await http.post(
-        Uri.parse(
-         '${baseurl}driverlogin?email_address=$username&password=$password',
+    islogin = true;
+    final SharedPreferences prefs = await _prefs;
+    var userHeader = {"Accept": "application/json"};
+    final response = await http.post(
+      Uri.parse(
+        '${baseurl}driverlogin?email_address=$username&password=$password',
+      ),
+      headers: userHeader,
+    );
+    if (response.statusCode == 200) {
+      var datas = (jsonDecode(response.body));
 
-        ),
-        headers: userHeader,
+      var token = datas['data']['token'];
+      final token1 = prefs.setString('new', token);
+      var userid = datas['data']['user_id'];
+      // final status1 = prefs.setString('stat', status);
+      print(userid);
+      islogin = false;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => tab_bar_screen(sts: userid)),
       );
-      if (response.statusCode == 200) {
-        var datas = (jsonDecode(response.body));
-        var token = datas['data']['token'];
-        final token1 = prefs.setString('new', token);
-        islogin = false;
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  tab_bar_screen()),
-        );
-
-      }
-      else {
-        islogin = false;
-        notifyListeners();
-      }
-
-
+    } else {
+      islogin = false;
+      notifyListeners();
+    }
   }
-  void driverworkstatus(status)async{
+
+  void driverworkstatus(status) async {
     final SharedPreferences prefs = await _prefs;
     final gettoken = prefs.getString('new');
     var userHeader = {
@@ -69,14 +66,16 @@ class http_service with ChangeNotifier{
     if (response.statusCode == 200) {
       var datas = (jsonDecode(response.body));
       print(datas);
+      print("dddddddddd${status}");
+
       notifyListeners();
       return datas;
-    }
-    else {
+    } else {
       return;
     }
   }
-  Future updatelocation (lat,lon)async{
+
+  Future updatelocation(lat, lon) async {
     final SharedPreferences prefs = await _prefs;
     final gettoken = prefs.getString('new');
     var userHeader = {
@@ -95,44 +94,42 @@ class http_service with ChangeNotifier{
       print(datas);
       notifyListeners();
       return datas;
-    }
-    else {
+    } else {
       return;
     }
   }
-Future<orderview?>  Showorders()async{
-  try {
-    final SharedPreferences prefs = await _prefs;
-    final gettoken = prefs.getString('new');
-    var userHeader = {
-      "Accept": "application/json",
-      'Authorization': 'Bearer $gettoken',
-    };
-    final response = await http.get(
-      Uri.parse(
-        '${baseurl}orderDetail',
-      ),
-      headers: userHeader,
-    );
-    print(response.body);
-    if (response.statusCode == 200) {
-      var datas = (jsonDecode(response.body));
-      var responsedata = orderview.fromJson(datas);
-      return responsedata;
-    }
-   else{
-     return null;
-    }
-  } on Exception catch (exception) {
-   return null;
-  } catch (error) {
-    print(error.toString());
-  return null;
-  }
 
-}
+  // Future<orderview?> Showorders() async {
+  //   try {
+  //     final SharedPreferences prefs = await _prefs;
+  //     final gettoken = prefs.getString('new');
+  //     var userHeader = {
+  //       "Accept": "application/json",
+  //       'Authorization': 'Bearer $gettoken',
+  //     };
+  //     final response = await http.get(
+  //       Uri.parse(
+  //         '${baseurl}orderDetail',
+  //       ),
+  //       headers: userHeader,
+  //     );
+  //     print(response.body);
+  //     if (response.statusCode == 200) {
+  //       var datas = (jsonDecode(response.body));
+  //       var responsedata = orderview.fromJson(datas);
+  //       return responsedata;
+  //     } else {
+  //       return null;
+  //     }
+  //   } on Exception catch (exception) {
+  //     return null;
+  //   } catch (error) {
+  //     print(error.toString());
+  //     return null;
+  //   }
+  // }
 
-  Future<orderview?>  all0rders()async{
+  Future<orderview?> all0rders() async {
     try {
       final SharedPreferences prefs = await _prefs;
       final gettoken = prefs.getString('new');
@@ -151,8 +148,7 @@ Future<orderview?>  Showorders()async{
         var datas = (jsonDecode(response.body));
         var responsedata = orderview.fromJson(datas);
         return responsedata;
-      }
-      else{
+      } else {
         return null;
       }
     } on Exception catch (exception) {
@@ -161,10 +157,9 @@ Future<orderview?>  Showorders()async{
       print(error.toString());
       return null;
     }
-
   }
 
-  Future<wallet?>  Wallet()async{
+  Future<wallet?> Wallet() async {
     try {
       final SharedPreferences prefs = await _prefs;
       final gettoken = prefs.getString('new');
@@ -181,10 +176,9 @@ Future<orderview?>  Showorders()async{
       print(response.body);
       if (response.statusCode == 200) {
         var datas = (jsonDecode(response.body));
-        var responsedata =  wallet.fromJson(datas);
+        var responsedata = wallet.fromJson(datas);
         return responsedata;
-      }
-      else{
+      } else {
         return null;
       }
     } on Exception catch (exception) {
@@ -193,10 +187,9 @@ Future<orderview?>  Showorders()async{
       print(error.toString());
       return null;
     }
-
   }
 
-  Future<completeOrder?>  completeorder()async{
+  Future<completeOrder?> completeorder() async {
     try {
       final SharedPreferences prefs = await _prefs;
       final gettoken = prefs.getString('new');
@@ -215,8 +208,7 @@ Future<orderview?>  Showorders()async{
         var datas = (jsonDecode(response.body));
         var responsedata = completeOrder.fromJson(datas);
         return responsedata;
-      }
-      else{
+      } else {
         return null;
       }
     } on Exception catch (exception) {
@@ -225,10 +217,9 @@ Future<orderview?>  Showorders()async{
       print(error.toString());
       return null;
     }
-
   }
 
-  Future<driverProfile?>  driverprofile()async{
+  Future<driverProfile?> driverprofile() async {
     try {
       final SharedPreferences prefs = await _prefs;
       final gettoken = prefs.getString('new');
@@ -247,8 +238,7 @@ Future<orderview?>  Showorders()async{
         var datas = (jsonDecode(response.body));
         var responsedata = driverProfile.fromJson(datas);
         return responsedata;
-      }
-      else{
+      } else {
         return null;
       }
     } on Exception catch (exception) {
@@ -257,11 +247,10 @@ Future<orderview?>  Showorders()async{
       print(error.toString());
       return null;
     }
-
   }
 
-
-  void changePassword(password,newpassword,confirmpassword,BuildContext context) async {
+  void changePassword(
+      password, newpassword, confirmpassword, BuildContext context) async {
     notifyListeners();
     islogin = true;
     final SharedPreferences prefs = await _prefs;
@@ -273,7 +262,6 @@ Future<orderview?>  Showorders()async{
     final response = await http.post(
       Uri.parse(
         '${baseurl}driverchangePassword?old_password=$password&password=$newpassword&confirm_password=$confirmpassword',
-
       ),
       headers: userHeader,
     );
@@ -282,21 +270,9 @@ Future<orderview?>  Showorders()async{
       print(datas);
       notifyListeners();
       return datas;
-    }
-    else {
+    } else {
       islogin = false;
       notifyListeners();
     }
-
-
   }
-
-
-
-
-
-
-  }
-
-
-
+}

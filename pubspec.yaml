@@ -41,7 +41,8 @@ dependencies:
   geolocator: ^8.0.5
   location: ^4.0.2
   flutter_polyline_points: ^1.0.0
-
+  flutter_local_notifications: ^9.5.3+1
+  pusher_client: ^2.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

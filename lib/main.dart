@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:delivery_boy_application/login_signup_screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,16 +9,18 @@ import 'package:provider/provider.dart';
 import 'http_services/htt_services.dart';
 import 'login_signup_screens/login_screen.dart';
 
+import 'package:pusher_client/pusher_client.dart';
+
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor:Colors.transparent,
+    statusBarColor: Colors.transparent,
   ));
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => http_service()),
       ],
-      child:MyApp(),
+      child: MyApp(),
     ),
   );
 }
@@ -46,6 +51,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
