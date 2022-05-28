@@ -2,6 +2,7 @@ import 'package:delivery_boy_application/details/alertbox.dart';
 import 'package:delivery_boy_application/details/orders_routing.dart';
 import 'package:delivery_boy_application/http_services/htt_services.dart';
 import 'package:delivery_boy_application/models/models.dart';
+import 'package:delivery_boy_application/views/user_vendor_locations.dart';
 import 'package:delivery_boy_application/widgets/dashboard_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -211,8 +212,11 @@ class avilable_delievries extends StatelessWidget {
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                openAlertBox(context);
-                                              },
+                                                Navigator.push (
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => uservendoes_location()),
+                                                );
+                                               },
                                               child: Container(
                                                 decoration: BoxDecoration(
                                                     color: Color.fromRGBO(
