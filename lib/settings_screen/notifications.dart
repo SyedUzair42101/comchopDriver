@@ -46,7 +46,6 @@ class notifications extends StatelessWidget {
               ),
               subtitle: Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18,color: Color.fromRGBO(104, 113, 122, 1)),),
-
             ),
           )
         ],
