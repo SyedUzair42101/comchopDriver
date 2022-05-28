@@ -59,62 +59,67 @@ class Earning extends StatelessWidget {
                           ),
                         )),
                   ),
-                  SizedBox(height:20),
+                  SizedBox(height: 20),
                   FutureBuilder<wallet?>(
                       future: provider.Wallet(),
-                      builder: (c,   snap) {
+                      builder: (c, snap) {
                         if (snap.connectionState == ConnectionState.waiting)
                           return Center(child: dashboardwidget().cicularbar());
                         if (snap.hasData) {
-                          return
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 20,right: 20),
-                                child: Container(
-                                    margin: EdgeInsets.all(10),
-                                    padding: EdgeInsets.all(10),
-                                    height: 143,
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: new BoxDecoration(
-                                        color: Color.fromRGBO(244, 244, 244, 1),
-                                        borderRadius: BorderRadius.circular(10)),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.all(10),
-                                          height: 100,
-                                          width: 170,
-                                          decoration: new BoxDecoration(
-                                              color: Color.fromRGBO(244, 244, 244, 1),
-                                              borderRadius: BorderRadius.circular(10)),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Text('Total',
-                                                style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-                                              Text('Payable: \$${snap.data!.driverWallet!.payable}'   ,
-                                                style: TextStyle(fontSize: 17),),
-                                              Text('Receivable: \$${snap.data!.driverWallet!.receivable}'   ,
-                                                style: TextStyle(fontSize: 17),),
-
-                                            ],
-                                          ),
+                          return Center(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: Container(
+                                  margin: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(10),
+                                  height: 143,
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: new BoxDecoration(
+                                      color: Color.fromRGBO(244, 244, 244, 1),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(10),
+                                        height: 100,
+                                        width: 170,
+                                        decoration: new BoxDecoration(
+                                            color: Color.fromRGBO(
+                                                244, 244, 244, 1),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Total',
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              'Payable: \$${snap.data!.driverWallet!.payable}',
+                                              style: TextStyle(fontSize: 17),
+                                            ),
+                                            Text(
+                                              'Receivable: \$${snap.data!.driverWallet!.receivable}',
+                                              style: TextStyle(fontSize: 17),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-
-                                    )
-
-
-
-                                ),
-                              ),
-                            );
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                          );
                         } else {
                           return dashboardwidget().cicularbar();
                         }
                       })
-
                 ],
               ),
             ),

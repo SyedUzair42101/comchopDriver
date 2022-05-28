@@ -6,6 +6,8 @@ import 'package:delivery_boy_application/views/user_vendor_locations.dart';
 import 'package:delivery_boy_application/widgets/dashboard_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class avilable_delievries extends StatelessWidget {
   const avilable_delievries({Key? key}) : super(key: key);
@@ -61,7 +63,7 @@ class avilable_delievries extends StatelessWidget {
                             return Container(
                               margin: EdgeInsets.all(10),
                               padding: EdgeInsets.all(10),
-                              height: 143,
+                              height: 210,
                               width: MediaQuery.of(context).size.width,
                               decoration: new BoxDecoration(
                                   color: Color.fromRGBO(244, 244, 244, 1),
@@ -148,7 +150,7 @@ class avilable_delievries extends StatelessWidget {
                                     height: 15,
                                   ),
                                   Container(
-                                    height: 63,
+                                    height: 128,
                                     width: MediaQuery.of(context).size.width,
                                     child: Column(
                                       crossAxisAlignment:
@@ -175,7 +177,7 @@ class avilable_delievries extends StatelessWidget {
                                               child: Text(
                                                 '${snap.data!.data![i].order!.restaurant!.address}',
                                                 style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
+                                                    fontWeight: FontWeight.w600,
                                                     fontSize: 12),
                                               ),
                                             ),
@@ -205,34 +207,490 @@ class avilable_delievries extends StatelessWidget {
                                                   '${snap.data!.data![i].order!.buyer!.userAddress!.address}',
                                                   style: TextStyle(
                                                       fontWeight:
-                                                          FontWeight.w700,
+                                                          FontWeight.w600,
                                                       fontSize: 12),
                                                 ),
                                               ],
                                             ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
                                             InkWell(
                                               onTap: () {
-                                                Navigator.push (
+                                                Navigator.push(
                                                   context,
-                                                  MaterialPageRoute(builder: (context) => uservendoes_location()),
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          uservendoes_location()),
                                                 );
-                                               },
+                                              },
                                               child: Container(
                                                 decoration: BoxDecoration(
-                                                    color: Color.fromRGBO(
-                                                        252, 186, 24, 1),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                                child: Icon(
-                                                  Icons.arrow_forward_outlined,
-                                                  color: Colors.white,
-                                                  size: 20,
+                                                  color: Color.fromRGBO(
+                                                      252, 186, 24, 1),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(7)),
+                                                ),
+                                                height: 35,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4,
+                                                child: Center(
+                                                  child: Text(
+                                                    'Show on Map',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 12),
+                                                  ),
                                                 ),
                                               ),
                                             ),
+                                            InkWell(
+                                              onTap: () async {
+                                                // final _prefs = SharedPreferences
+                                                //     .getInstance();
+                                                // final SharedPreferences prefs =
+                                                //     await _prefs;
+                                                // final gettoken =
+                                                //     prefs.getString('new');
+                                                // var userHeader = {
+                                                //   "Accept": "application/json",
+                                                //   'Authorization':
+                                                //       'Bearer $gettoken',
+                                                // };
+                                                // final response = await http.get(
+                                                //   Uri.parse(
+                                                //     'https://dnpprojects.com/demo/comshop/api/orderDetailIndividual/${snap.data!.data![i].orderId}',
+                                                //   ),
+                                                //   headers: userHeader,
+                                                // );
+                                                // print(response);
+
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            10))),
+                                                        contentPadding:
+                                                            EdgeInsets.only(
+                                                                top: 0.0,
+                                                                bottom: 10),
+                                                        backgroundColor:
+                                                            Color.fromRGBO(242,
+                                                                242, 242, 1),
+                                                        content: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: <Widget>[
+                                                            Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                        252,
+                                                                        186,
+                                                                        24,
+                                                                        1),
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            0)),
+                                                              ),
+                                                              height: 50,
+                                                              child: Center(
+                                                                child: Text(
+                                                                  '${snap.data!.data![i].orderId}',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              margin: EdgeInsets
+                                                                  .all(5),
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(10),
+                                                              height: 113,
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
+                                                              decoration: new BoxDecoration(
+                                                                  color: Color
+                                                                      .fromRGBO(
+                                                                          255,
+                                                                          255,
+                                                                          255,
+                                                                          1),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10)),
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceEvenly,
+                                                                children: [
+                                                                  Center(
+                                                                    child: Text(
+                                                                      'Order',
+                                                                      style: TextStyle(
+                                                                          color: Color.fromRGBO(
+                                                                              252,
+                                                                              186,
+                                                                              24,
+                                                                              1),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ),
+                                                                  Divider(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    height: 4.0,
+                                                                  ),
+                                                                  Row(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        'Deal1',
+                                                                        style: TextStyle(
+                                                                            color: Color.fromRGBO(
+                                                                                136,
+                                                                                136,
+                                                                                136,
+                                                                                1),
+                                                                            fontSize:
+                                                                                12),
+                                                                      ),
+                                                                      Text(
+                                                                        ' \$345.00',
+                                                                        style: TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.w700,
+                                                                            fontSize: 12),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Row(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        '7up Regular 250ml',
+                                                                        style: TextStyle(
+                                                                            color: Color.fromRGBO(
+                                                                                136,
+                                                                                136,
+                                                                                136,
+                                                                                1),
+                                                                            fontSize:
+                                                                                12),
+                                                                      ),
+                                                                      Text(
+                                                                        ' \$9.00',
+                                                                        style: TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.w700,
+                                                                            fontSize: 12),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Row(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        'Delivery Charge',
+                                                                        style: TextStyle(
+                                                                            color: Color.fromRGBO(
+                                                                                252,
+                                                                                186,
+                                                                                24,
+                                                                                1),
+                                                                            fontSize:
+                                                                                12),
+                                                                      ),
+                                                                      Text(
+                                                                        ' \$345.00',
+                                                                        style: TextStyle(
+                                                                            color: Color.fromRGBO(
+                                                                                252,
+                                                                                186,
+                                                                                24,
+                                                                                1),
+                                                                            fontWeight:
+                                                                                FontWeight.w700,
+                                                                            fontSize: 12),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Row(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        'Total',
+                                                                        style: TextStyle(
+                                                                            color: Color.fromRGBO(
+                                                                                136,
+                                                                                136,
+                                                                                136,
+                                                                                1),
+                                                                            fontSize:
+                                                                                12),
+                                                                      ),
+                                                                      Text(
+                                                                        ' \$345.00',
+                                                                        style: TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.w700,
+                                                                            fontSize: 12),
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              margin: EdgeInsets
+                                                                  .all(5),
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(10),
+                                                              height: 113,
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
+                                                              decoration: new BoxDecoration(
+                                                                  color: Color
+                                                                      .fromRGBO(
+                                                                          255,
+                                                                          255,
+                                                                          255,
+                                                                          1),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10)),
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceEvenly,
+                                                                children: [
+                                                                  Center(
+                                                                    child: Text(
+                                                                      'Customer',
+                                                                      style: TextStyle(
+                                                                          color: Color.fromRGBO(
+                                                                              252,
+                                                                              186,
+                                                                              24,
+                                                                              1),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ),
+                                                                  Divider(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    height: 4.0,
+                                                                  ),
+                                                                  Row(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        'Name                                             ',
+                                                                        style: TextStyle(
+                                                                            color: Color.fromRGBO(
+                                                                                136,
+                                                                                136,
+                                                                                136,
+                                                                                1),
+                                                                            fontSize:
+                                                                                12),
+                                                                      ),
+                                                                      Text(
+                                                                        'Saman John',
+                                                                        style: TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.w700,
+                                                                            fontSize: 12),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Row(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        'Mobile Number',
+                                                                        style: TextStyle(
+                                                                            color: Color.fromRGBO(
+                                                                                136,
+                                                                                136,
+                                                                                136,
+                                                                                1),
+                                                                            fontSize:
+                                                                                12),
+                                                                      ),
+                                                                      Text(
+                                                                        ' (+91) 65666333',
+                                                                        style: TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.w700,
+                                                                            fontSize: 12),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              child: Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Container(
+                                                                      height:
+                                                                          50,
+                                                                      width:
+                                                                          150,
+                                                                      child: MaterialButton(
+                                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                                                                          color: Color.fromRGBO(252, 186, 24, 1),
+                                                                          child: Text(
+                                                                            'Deleivered',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontFamily: 'Roboto',
+                                                                              color: Colors.white,
+                                                                            ),
+                                                                          ),
+                                                                          onPressed: () {
+                                                                            Navigator.push(
+                                                                              context,
+                                                                              MaterialPageRoute(builder: (context) => uservendoes_location()),
+                                                                            );
+                                                                          })),
+                                                                  SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  // Container(
+                                                                  //     height: 30,
+                                                                  //     width: 90,
+                                                                  //     child: MaterialButton(
+                                                                  //         shape: RoundedRectangleBorder(
+                                                                  //             borderRadius: BorderRadius.circular(6)),
+                                                                  //         color: Color.fromRGBO(252, 186, 24, 1),
+                                                                  //         child: Text(
+                                                                  //           'Accept',
+                                                                  //           style: TextStyle(
+                                                                  //             fontFamily: 'Roboto',
+                                                                  //             color: Colors.white,
+                                                                  //           ),
+                                                                  //         ),
+                                                                  //         onPressed: () {
+                                                                  //           Navigator.push(
+                                                                  //             context,
+                                                                  //             MaterialPageRoute(
+                                                                  //                 builder: (BuildContext context) =>
+                                                                  //                     orders_routing()),
+                                                                  //           );
+                                                                  //         })),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: Color.fromRGBO(
+                                                      252, 186, 24, 1),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(7)),
+                                                ),
+                                                height: 35,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4,
+                                                child: Center(
+                                                  child: Text(
+                                                    'Details',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 12),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
                                           ],
-                                        ),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -251,243 +709,7 @@ class avilable_delievries extends StatelessWidget {
     );
   }
 
-  openAlertBox(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            contentPadding: EdgeInsets.only(top: 0.0, bottom: 10),
-            backgroundColor: Color.fromRGBO(242, 242, 242, 1),
-            content: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(252, 186, 24, 1),
-                    borderRadius: BorderRadius.all(Radius.circular(0)),
-                  ),
-                  height: 50,
-                  child: Center(
-                    child: Text(
-                      'Order ID: ACR145786',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(5),
-                  padding: EdgeInsets.all(10),
-                  height: 113,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: new BoxDecoration(
-                      color: Color.fromRGBO(255, 255, 255, 1),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Center(
-                        child: Text(
-                          'Order',
-                          style: TextStyle(
-                              color: Color.fromRGBO(252, 186, 24, 1),
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                      Divider(
-                        color: Colors.grey,
-                        height: 4.0,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Deal1',
-                            style: TextStyle(
-                                color: Color.fromRGBO(136, 136, 136, 1),
-                                fontSize: 12),
-                          ),
-                          Text(
-                            ' \$345.00',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 12),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '7up Regular 250ml',
-                            style: TextStyle(
-                                color: Color.fromRGBO(136, 136, 136, 1),
-                                fontSize: 12),
-                          ),
-                          Text(
-                            ' \$9.00',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 12),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Delivery Charge',
-                            style: TextStyle(
-                                color: Color.fromRGBO(252, 186, 24, 1),
-                                fontSize: 12),
-                          ),
-                          Text(
-                            ' \$345.00',
-                            style: TextStyle(
-                                color: Color.fromRGBO(252, 186, 24, 1),
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Total',
-                            style: TextStyle(
-                                color: Color.fromRGBO(136, 136, 136, 1),
-                                fontSize: 12),
-                          ),
-                          Text(
-                            ' \$345.00',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 12),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(5),
-                  padding: EdgeInsets.all(10),
-                  height: 113,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: new BoxDecoration(
-                      color: Color.fromRGBO(255, 255, 255, 1),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Center(
-                        child: Text(
-                          'Customer',
-                          style: TextStyle(
-                              color: Color.fromRGBO(252, 186, 24, 1),
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                      Divider(
-                        color: Colors.grey,
-                        height: 4.0,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Name                                             ',
-                            style: TextStyle(
-                                color: Color.fromRGBO(136, 136, 136, 1),
-                                fontSize: 12),
-                          ),
-                          Text(
-                            'Saman John',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 12),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Mobile Number',
-                            style: TextStyle(
-                                color: Color.fromRGBO(136, 136, 136, 1),
-                                fontSize: 12),
-                          ),
-                          Text(
-                            ' (+91) 65666333',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          height: 50,
-                          width: 150,
-                          child: MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6)),
-                              color: Color.fromRGBO(252, 186, 24, 1),
-                              child: Text(
-                                'Deleivered',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  color: Colors.white,
-                                ),
-                              ),
-                              onPressed: () {
-                                modal().reject_order(context);
-                              })),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      // Container(
-                      //     height: 30,
-                      //     width: 90,
-                      //     child: MaterialButton(
-                      //         shape: RoundedRectangleBorder(
-                      //             borderRadius: BorderRadius.circular(6)),
-                      //         color: Color.fromRGBO(252, 186, 24, 1),
-                      //         child: Text(
-                      //           'Accept',
-                      //           style: TextStyle(
-                      //             fontFamily: 'Roboto',
-                      //             color: Colors.white,
-                      //           ),
-                      //         ),
-                      //         onPressed: () {
-                      //           Navigator.push(
-                      //             context,
-                      //             MaterialPageRoute(
-                      //                 builder: (BuildContext context) =>
-                      //                     orders_routing()),
-                      //           );
-                      //         })),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
-  }
+  // openAlertBox(BuildContext context) {
+  //   return
+  // }
 }

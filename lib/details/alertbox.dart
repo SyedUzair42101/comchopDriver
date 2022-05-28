@@ -1,4 +1,4 @@
- import 'package:delivery_boy_application/login_signup_screens/login_screen.dart';
+import 'package:delivery_boy_application/login_signup_screens/login_screen.dart';
 import 'package:delivery_boy_application/login_signup_screens/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,17 +37,11 @@ class modal {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-
-                    decoration: InputDecoration(
-
-
-                    ),
+                    decoration: InputDecoration(),
                   ),
                 ),
-
                 Container(
-                  child:
-                  Row(
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -74,7 +68,9 @@ class modal {
                                 //           login_screen()),
                                 // );
                               })),
-                      SizedBox(width: 10,),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Container(
                           height: 30,
                           width: 90,
@@ -113,8 +109,8 @@ class modal {
           return AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10))),
-            contentPadding: EdgeInsets.only(
-                top: 10, bottom: 10, right: 10, left: 10),
+            contentPadding:
+                EdgeInsets.only(top: 10, bottom: 10, right: 10, left: 10),
             backgroundColor: Color.fromRGBO(242, 242, 242, 1),
             content: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,19 +118,24 @@ class modal {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
-
-
                   height: 50,
                   child: Center(
                     child: Image.asset('images/sucess.png'),
                   ),
                 ),
-                Center(child: Text('Congratulation Order Completed.',
-                  style: TextStyle(color: Color.fromRGBO(157, 157, 157, 1),
+                Center(
+                    child: Text(
+                  'Congratulation Order Completed.',
+                  style: TextStyle(
+                      color: Color.fromRGBO(157, 157, 157, 1),
                       fontSize: 12,
-                      fontWeight: FontWeight.w700),)),
-                Center(child: Text('You have completed Order\n Number ACR14782',
-                  style: TextStyle(color: Colors.black, fontSize: 14),)),
+                      fontWeight: FontWeight.w700),
+                )),
+                Center(
+                    child: Text(
+                  'You have completed Order\n Number ACR14782',
+                  style: TextStyle(color: Colors.black, fontSize: 14),
+                )),
               ],
             ),
           );
@@ -157,7 +158,6 @@ class modal {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
-
                   height: 80,
                   child: Center(
                     child: Text(
@@ -167,11 +167,8 @@ class modal {
                     ),
                   ),
                 ),
-
-
                 Container(
-                  child:
-                  Row(
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -198,7 +195,9 @@ class modal {
                                 //           login_screen()),
                                 // );
                               })),
-                      SizedBox(width: 10,),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Container(
                           height: 30,
                           width: 90,
@@ -227,6 +226,6 @@ class modal {
               ],
             ),
           );
-        });}
-
+        });
+  }
 }
