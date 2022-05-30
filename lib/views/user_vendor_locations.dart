@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -12,14 +14,17 @@ class uservendoes_location extends StatefulWidget {
 }
 
 class _uservendoes_locationState extends State<uservendoes_location> {
-   static const LatLng _center = const LatLng(24.986557, 67.0644278);
+  Uint8List? markerImages;
+
+
+  static const LatLng _center = const LatLng(24.986557, 67.0644278);
   late GoogleMapController mapController; //contrller for Google map
   final Set<Marker> markers = new Set(); //markers for google map
   static const LatLng showLocation = const LatLng(27.7089427, 85.3086209);
 
   @override
-  Widget build(BuildContext context) {
 
+  Widget build(BuildContext context) {
        return  Scaffold(
         appBar: AppBar(
         title: Text("Multiple Markers in Google Map"),

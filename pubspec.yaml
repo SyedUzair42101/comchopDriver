@@ -43,6 +43,7 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   flutter_local_notifications: ^9.5.3+1
   pusher_client: ^2.0.0
+  uuid: ^3.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
