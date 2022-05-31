@@ -1,18 +1,18 @@
-class orderDetailIndividual {
+class invdorder {
   bool? status;
   String? orderId;
   int? totalPrice;
   Customer? customer;
   List<OrderDetail>? orderDetail;
 
-  orderDetailIndividual(
+  invdorder(
       {this.status,
       this.orderId,
       this.totalPrice,
       this.customer,
       this.orderDetail});
 
-  orderDetailIndividual.fromJson(Map<String, dynamic> json) {
+  invdorder.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     orderId = json['orderId'];
     totalPrice = json['total_price'];
