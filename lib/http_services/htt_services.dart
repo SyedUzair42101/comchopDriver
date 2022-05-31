@@ -320,7 +320,7 @@ class http_service with ChangeNotifier {
       if (response.statusCode == 200) {
         showDialog(
           context: context,
-          builder: (BuildContext snap) {
+          builder: (dialogContex) {
             return AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -498,7 +498,10 @@ class http_service with ChangeNotifier {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
+                                  Navigator.of(dialogContex,
+                                          rootNavigator: true)
+                                      .pop();
+
                                   ordersuccessful(orderid, context);
                                 })),
                         SizedBox(
