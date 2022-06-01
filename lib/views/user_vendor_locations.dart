@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
@@ -14,81 +15,104 @@ class uservendoes_location extends StatefulWidget {
 }
 
 class _uservendoes_locationState extends State<uservendoes_location> {
-  Uint8List? markerImages;
+  Set<Marker> _markers = <Marker>{};
 
-
-  static const LatLng _center = const LatLng(24.986557, 67.0644278);
-  late GoogleMapController mapController; //contrller for Google map
-  final Set<Marker> markers = new Set(); //markers for google map
-  static const LatLng showLocation = const LatLng(27.7089427, 85.3086209);
+  // declare a global key
+  final GlobalKey globalKey = GlobalKey();
 
   @override
-
   Widget build(BuildContext context) {
-       return  Scaffold(
-        appBar: AppBar(
-        title: Text("Multiple Markers in Google Map"),
-        backgroundColor: Colors.deepOrangeAccent,
-      ),
-        body: GoogleMap( //Map widget from google_maps_flutter package
-        zoomGesturesEnabled: true, //enable Zoom in, out on map
-        initialCameraPosition: CameraPosition( //innital position in map
-          target: showLocation, //initial position
-          zoom: 15.0, //initial zoom level
+    return Stack(
+      children: [
+        Scaffold(
+          body: Stack(
+            children: [
+
+              // you have to add your widget in the same widget tree
+              // add your google map in stack
+              // declare your marker before google map
+              // pass your global key to your widget
+
+              MyMarker(globalKey),
+
+              Positioned.fill(
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                      target: LatLng(32.4279, 53.6880), zoom: 15),
+                  markers: _markers,
+                ),
+              ),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            label: FittedBox(child: Text('Add Markers')),
+            onPressed: () async {
+
+              // call widgetToIcon Function and pass the same global key
+
+              _markers.add(
+                Marker(
+                  markerId: MarkerId('circleCanvasWithText'),
+                  icon: await MarkerIcon.widgetToIcon(globalKey),
+                  position: LatLng(35.8400, 50.9391),
+                ),
+              );
+              setState(() {});
+            },
+          ),
+          floatingActionButtonLocation:
+          FloatingActionButtonLocation.centerFloat,
         ),
-        markers: getmarkers(), //markers to show on map
-        mapType: MapType.normal, //map type
-        onMapCreated: (controller) { //method called when map is created
-          setState(() {
-            mapController = controller;
-          });
-        },
+      ],
+    );
+  }
+}
+
+class MyMarker extends StatelessWidget {
+  // declare a global key and get it trough Constructor
+
+  MyMarker(this.globalKeyMyWidget);
+  final GlobalKey globalKeyMyWidget;
+
+  @override
+  Widget build(BuildContext context) {
+    // wrap your widget with RepaintBoundary and
+    // pass your global key to RepaintBoundary
+    return RepaintBoundary(
+      key: globalKeyMyWidget,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: 250,
+            height: 180,
+            decoration:
+            BoxDecoration(color: Colors.black, shape: BoxShape.circle),
+          ),
+          Container(
+              width: 220,
+              height: 150,
+              decoration:
+              BoxDecoration(color: Colors.amber, shape: BoxShape.circle),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.accessibility,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                  Text(
+                    'Widget',
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                ],
+              )),
+        ],
       ),
     );
   }
-
-  Set<Marker> getmarkers() { //markers to place on map
-    setState(() {
-      markers.add(Marker(
-
-        //ad
-        // d first marker
-        markerId: MarkerId(showLocation.toString()),
-        position: showLocation, //position of marker
-        infoWindow: InfoWindow( //popup info
-          title: 'Marker Title First ',
-          snippet: 'My Custom Subtitle',
-        ),
-        icon: BitmapDescriptor.defaultMarker, //Icon for Marker
-      ));
-
-      markers.add(Marker( //add second marker
-        markerId: MarkerId(showLocation.toString()),
-        position: LatLng(27.7099116, 85.3132343), //position of marker
-        infoWindow: InfoWindow( //popup info
-          title: 'Marker Title Second ',
-          snippet: 'My Custom Subtitle',
-        ),
-        icon: BitmapDescriptor.defaultMarker, //Icon for Marker
-      ));
-
-      markers.add(Marker( //
-
-        markerId: MarkerId(showLocation.toString()),
-        position: LatLng(27.7137735, 85.315626), //position of marker
-        infoWindow: InfoWindow( //popup info
-          title: 'Marker Title Third ',
-          snippet: 'My Custom Subtitle',
-
-        ),
-        icon: BitmapDescriptor.defaultMarker, //Icon for Marker
-
-
-      ));
-
-      //add more markers here
-    });
-
-    return markers;
-  }
 }
+
+
+
