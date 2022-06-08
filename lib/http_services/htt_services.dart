@@ -19,6 +19,8 @@ class http_service with ChangeNotifier {
   var longtitude;
   var baseurl = 'https://dnpprojects.com/demo/comshop/api/';
   final _prefs = SharedPreferences.getInstance();
+  final  prefs = SharedPreferences.getInstance();
+
   bool islogin = false;
 
   void login(username, password, BuildContext context) async {
@@ -542,6 +544,43 @@ class http_service with ChangeNotifier {
         return res;
       } else {
         return datas;
+      }
+    } on Exception catch (exception) {
+      return null;
+    } catch (error) {
+      print(error.toString());
+      return null;
+    }
+  }
+  Future getlatlong(ID) async {
+  try {
+      final SharedPreferences prefs = await _prefs;
+      final gettoken = prefs.getString('new');
+      var userHeader = {
+        "Accept": "application/json",
+        'Authorization': 'Bearer $gettoken',
+      };
+      final response = await http.get(
+        Uri.parse(
+          '${baseurl}getOrderLocation/$ID',
+
+        ),
+        headers: userHeader,
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        var datas = (jsonDecode(response.body));
+         var lat = datas['data']['customer']['lat'];
+        var lng = datas['data']['customer']['lng'];
+        var vendorlat = datas['data']['restaurant']['lat'];
+        var vendorlng = datas['data']['restaurant']['lat'];
+        prefs.setDouble('customerlat',lat);
+        prefs.setDouble('customerlng',lng);
+        prefs.setDouble('resturentlat',vendorlat);
+        prefs.setDouble('returentlng',vendorlng);
+        return datas;
+      } else {
+        return null;
       }
     } on Exception catch (exception) {
       return null;

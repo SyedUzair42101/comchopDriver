@@ -1,38 +1,64 @@
+import 'dart:convert';
 import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 
+import 'package:delivery_boy_application/http_services/htt_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class uservendoes_location extends StatefulWidget {
-  const uservendoes_location({Key? key}) : super(key: key);
+    final userlat;
+    final userlng;
+  const uservendoes_location({Key? key, this.userlat, this.userlng}) : super(key: key);
 
   @override
   State<uservendoes_location> createState() => _uservendoes_locationState();
 }
 
 class _uservendoes_locationState extends State<uservendoes_location> {
-  GoogleMapController? mapController; //contrller for Google map
-  Set<Marker> markers = Set(); //markers for google map
-
-  LatLng startLocation = LatLng(27.6602292, 85.308027);
-  LatLng endLocation = LatLng(27.6599592, 85.3102498);
-  LatLng carLocation = LatLng(27.659470, 85.3077363);
-
+  static double customerlat =0.0 ;
+  static double  customerlng = 0.0;
+  static double vendorlat =0.0 ;
+  static double  vendorlng = 0.0;
   @override
   void initState() {
+    ;
+    http_service().getlatlong(widget.userlat);
     addMarkers();
+    getlatlongs();
     super.initState();
   }
+  getlatlongs()async{
+    final _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+  setState(() {
+    customerlat =  prefs.getDouble('customerlat' )!;
+    customerlng  =  prefs.getDouble('customerlng' )!;
+    vendorlat =  prefs.getDouble('resturentlat' )!;
+    vendorlng   =  prefs.getDouble('returentlng' )!;
+    print(customerlat);
+    print(customerlng);
+  });
+  }
 
-  addMarkers() async {
+   GoogleMapController? mapController; //contrller for Google map
+  Set<Marker> markers = Set(); //markers for google map
+  LatLng startLocation = LatLng(vendorlat,vendorlng);
+  LatLng endLocation = LatLng(customerlat  ,customerlng );
+  LatLng carLocation = LatLng(24.9841966,67.0617939);
+   addMarkers() async {
+
     BitmapDescriptor markerbitmap = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(),
-      "images/iconbike.png",
-
+      "images/resturent.png",
     );
-
+    BitmapDescriptor markerbitmaps = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(),
+      "images/user.png",
+    );
     markers.add(
         Marker( //add start location marker
           markerId: MarkerId(startLocation.toString()),
@@ -45,20 +71,20 @@ class _uservendoes_locationState extends State<uservendoes_location> {
         )
     );
 
-    markers.add(
-        Marker( //add start location marker
-          markerId: MarkerId(endLocation.toString()),
-          position: endLocation, //position of marker
-          rotation:-45,
-          infoWindow: InfoWindow( //popup info
-            title: 'End Point ',
-            snippet: 'End Marker',
-          ),
-          icon: markerbitmap, //Icon for Marker
-        ),
-
-
-    );
+    // markers.add(
+    //     Marker( //add start location marker
+    //       markerId: MarkerId( 'new'),
+    //       position: endLocation , //position of marker
+    //       rotation:-45,
+    //       infoWindow: InfoWindow( //popup info
+    //         title: 'End Point ',
+    //         snippet: 'End Markers',
+    //       ),
+    //       icon: markerbitmaps, //Icon for Marker
+    //     ),
+    //
+    //
+    // );
     markers.add(
       Marker( //add start location marker
         markerId: MarkerId(endLocation.toString()),
@@ -68,7 +94,7 @@ class _uservendoes_locationState extends State<uservendoes_location> {
           title: 'End Point ',
           snippet: 'End Marker',
         ),
-        icon: markerbitmap, //Icon for Marker
+        icon: markerbitmaps, //Icon for Marker
       ),
 
 
@@ -100,19 +126,17 @@ class _uservendoes_locationState extends State<uservendoes_location> {
    @override
   Widget build(BuildContext context) {
     return  Scaffold(
-        appBar: AppBar(
-          title: Text("Image Marker on Google Map"),
-          backgroundColor: Colors.deepPurpleAccent,
-        ),
-        body: GoogleMap( //Map widget from google_maps_flutter package
+
+        body:
+        GoogleMap( //Map widget from google_maps_flutter package
           zoomGesturesEnabled: true, //enable Zoom in, out on map
           initialCameraPosition: CameraPosition( //innital position in map
             target: startLocation, //initial position
             zoom: 14.0, //initial zoom level
           ),
-          markers: markers, //markers to show on map
-          mapType: MapType.normal, //map type
-          onMapCreated: (controller) { //method called when map is created
+          markers: markers,
+          mapType: MapType.normal,
+          onMapCreated: (controller) {
             setState(() {
               mapController = controller;
             });

@@ -10,12 +10,21 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class avilable_delievries extends StatelessWidget {
+class avilable_delievries extends StatefulWidget {
   const avilable_delievries({Key? key}) : super(key: key);
 
+
+  @override
+  _avilable_delievriesState createState() => _avilable_delievriesState();
+}
+
+class _avilable_delievriesState extends State<avilable_delievries> {
+  static double customerlat =0.0 ;
+  static double  customerlng = 0.0;
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<http_service>(context, listen: false);
+
     // var http_services = Provider.of<http_service>(context);
     return Scaffold(
       appBar: AppBar(
@@ -236,12 +245,25 @@ class avilable_delievries extends StatelessWidget {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             InkWell(
-                                              onTap: () {
+                                              onTap: ()async {
+                                                final _prefs = SharedPreferences.getInstance();
+                                                final SharedPreferences prefs = await _prefs;
+                                                setState(() {
+                                                  customerlat =  prefs.getDouble('customerlat' )!;
+                                                  customerlng  =  prefs.getDouble('customerlng' )!;
+                                                  print(customerlat);
+                                                  print(customerlng);
+                                                });
+                                                print(prefs.getDouble('customerlat' ) ) ;
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          uservendoes_location()),
+                                                          uservendoes_location(
+                                                          userlat:order_id  ,
+                                                          userlng:  customerlng  ,
+
+                                                          )),
                                                 );
                                               },
                                               child: Container(
@@ -316,8 +338,4 @@ class avilable_delievries extends StatelessWidget {
       ),
     );
   }
-
-  // openAlertBox(BuildContext context) {
-  //   return
-  // }
 }

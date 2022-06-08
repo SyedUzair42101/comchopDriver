@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 class dashboard extends StatefulWidget {
   dashboard({Key? key}) : super(key: key);
 
@@ -17,69 +17,127 @@ class dashboard extends StatefulWidget {
 }
 
 class _dashboardState extends State<dashboard> {
+  bool isSwitchedFT = false;
+  LatLng startLocation = LatLng(33.720001,73.059998);
+  GoogleMapController? mapController; //contrller for Google map
   late Position position;
-
   bool isSwitched = false;
   var textValue = 'You are offline';
   int? status;
-  final Completer<GoogleMapController> _controller = Completer();
-
-  static const LatLng _center = const LatLng(24.986557, 67.0644278);
-
   // final Set<Marker> _markers = {};
+  // void toggleSwitch(
+  //   bool value,
+  // ) {
+  //   isSwitchedFT = value;
+  //
+  //   print('Saved state is $isSwitchedFT');
+  //   if (isSwitchedFT == false) {
+  //     setState(() {
+  //       isSwitchedFT = true;
+  //       textValue = 'You are online';
+  //       status = 1;
+  //       http_service().driverworkstatus(status);
+  //     });
+  //     print('You are online');
+  //   } else {
+  //     setState(() {
+  //       isSwitchedFT = false;
+  //       textValue = 'You are offline';
+  //       status = 0;
+  //       http_service().driverworkstatus(status);
+  //     });
+  //     print('You are offline');
+  //   }
+  // }
 
-  void toggleSwitch(
-    bool value,
-  ) {
-    if (isSwitched == false) {
-      setState(() {
-        isSwitched = true;
-        textValue = 'You are online';
-        status = 1;
-        http_service().driverworkstatus(status);
-      });
-      print('You are online');
-    } else {
-      setState(() {
-        isSwitched = false;
-        textValue = 'You are offline';
-        status = 0;
-        http_service().driverworkstatus(status);
-      });
-      print('You are offline');
-    }
-  }
 
-  void getLocation() async {
-    Position res = await Geolocator.getCurrentPosition();
-    setState(() {
-      position = res;
-    });
-  }
+
 
   @override
   void initState() {
     location_data().currentlocation();
     // TODO: implement initState
-    super.initState();
-    getLocation();
+  }
+ var valuesatus ;
+  bool switchControl = false;
+  bool switchControl2 = false;
+  bool switchControl3 = false;
+  var textHolder = 'OFF';
+  var textHolder2 = "OFF";
+  var textHolder3 ="OFF";
+   Future<void> toggleSwitch(bool value) async {
+
+    if(switchControl == false&&valuesatus ==true)
+    {
+      setState(() {
+        saveSwitchState(value);
+        switchControl = true;
+        textHolder = 'online';
+        status = 1;
+         http_service().driverworkstatus(status);
+      });
+      print('ON');
+     }
+    else
+    {
+      setState(() {
+        saveSwitchState(value);
+        switchControl = false;
+        textHolder = 'offine';
+        status = 0;
+       http_service().driverworkstatus(status);
+      });
+      print('OFF');
+     }
+   }
+   getSwitchValues() async {
+    switchControl = await getSwitchState();
+    setState(() {});
+
+    switchControl2 = await getSwitchState2();
+    setState(() {});
+
+    switchControl3 = await getSwitchState3();
+    setState(() {});
   }
 
-  final List<Marker> _markers = <Marker>[
-    Marker(
-        markerId: MarkerId('1'),
-        position: LatLng(24.986557, 67.0644278),
-        // position: LatLng(http_service().latitude, http_service().longtitude),
-        infoWindow: InfoWindow(title: "j"))
-  ];
 
-  Future<Position> getUserLocation() async {
-    await Geolocator.requestPermission()
-        .then((value) {})
-        .onError((error, stackTrace) async {
-      await Geolocator.requestPermission();
-    });
-    return await Geolocator.getCurrentPosition();
+  Future<bool> saveSwitchState(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("switchState", value);
+    print('Switch Value saved $value');
+     setState(() {
+       valuesatus = prefs.getBool("switchState", );
+     });
+    return prefs.setBool("switchState", value);
+  }
+
+
+
+
+
+  Future<bool> getSwitchState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isSwitchedFT = prefs.getBool("switchState") ?? false;
+    print(isSwitchedFT);
+
+    return isSwitchedFT;
+  }
+
+  Future<bool> getSwitchState2() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isSwitchedFT2 = prefs.getBool("switchState2") ?? false;
+    print(isSwitchedFT2);
+
+    return isSwitchedFT2;
+  }
+
+  Future<bool> getSwitchState3() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isSwitchedFT3 = prefs.getBool("switchState3") ?? false;
+    print(isSwitchedFT3);
+
+    return isSwitchedFT3;
   }
 
   @override
@@ -88,18 +146,26 @@ class _dashboardState extends State<dashboard> {
         body: Stack(
       children: [
         GoogleMap(
-          mapType: MapType.normal,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-          markers: Set<Marker>.of(_markers),
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 14.0,
+          myLocationButtonEnabled: true,
+          myLocationEnabled: true,
+          //Map widget from google_maps_flutter package
+          zoomGesturesEnabled: true, //enable Zoom in, out on map
+          initialCameraPosition: CameraPosition( //innital position in map
+            target: startLocation, //initial position
+            zoom: 14.0, //initial zoom level
           ),
-          zoomControlsEnabled: true,
-          zoomGesturesEnabled: true,
+
+          mapType: MapType.normal,
+          onMapCreated: (controller) {
+            setState(() {
+              mapController = controller;
+            });
+          },
         ),
+
+
+
+
         SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(
@@ -119,16 +185,16 @@ class _dashboardState extends State<dashboard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '$textValue',
+                      '$textHolder',
                       style: TextStyle(fontSize: 15),
                     ),
                     Switch(
                       onChanged: toggleSwitch,
-                      value: isSwitched,
-                      activeColor: Colors.white,
-                      activeTrackColor: Colors.orange,
-                      inactiveThumbColor: Colors.grey,
-                      inactiveTrackColor: Colors.orange,
+                      value: switchControl,
+                      activeColor: Colors.pinkAccent,
+                      activeTrackColor: Colors.grey[400],
+                      inactiveThumbColor: Colors.grey[200],
+                      inactiveTrackColor: Colors.grey,
                     ),
                   ],
                 )),
@@ -168,5 +234,6 @@ class _dashboardState extends State<dashboard> {
         ),
       ],
     ));
+
   }
 }
