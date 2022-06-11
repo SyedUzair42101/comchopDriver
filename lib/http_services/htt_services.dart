@@ -570,14 +570,16 @@ class http_service with ChangeNotifier {
       print(response.body);
       if (response.statusCode == 200) {
         var datas = (jsonDecode(response.body));
-         var lat = datas['data']['customer']['lat'];
-        var lng = datas['data']['customer']['lng'];
-        var vendorlat = datas['data']['restaurant']['lat'];
-        var vendorlng = datas['data']['restaurant']['lat'];
+         double lat = datas['data']['customer']['lat'];
+        double lng = datas['data']['customer']['lng'];
+        print(datas['data']['restaurant']['lat']);
+        print(datas['data']['customer']['lat']);
+        // double vendorlat = datas['data']['restaurant']['lat'];
+        // double vendorlng = datas['data']['restaurant']['lat'];
         prefs.setDouble('customerlat',lat);
-        prefs.setDouble('customerlng',lng);
-        prefs.setDouble('resturentlat',vendorlat);
-        prefs.setDouble('returentlng',vendorlng);
+        prefs.setDouble('customerlng',lng  );
+        // prefs.setDouble('resturentlat',vendorlat   );
+        // prefs.setDouble('returentlng',vendorlng );
         return datas;
       } else {
         return null;

@@ -260,7 +260,7 @@ class _avilable_delievriesState extends State<avilable_delievries> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           uservendoes_location(
-                                                          userlat:order_id  ,
+                                                          userlat: snap.data!.data![i].orderId ,
                                                           userlng:  customerlng  ,
 
                                                           )),

@@ -1,12 +1,14 @@
 import 'package:delivery_boy_application/login_signup_screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-
+ import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'http_services/htt_services.dart';
 import 'login_signup_screens/login_screen.dart';
 
 void main() async {
+  await GetStorage.init();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));

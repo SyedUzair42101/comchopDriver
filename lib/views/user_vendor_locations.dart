@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class uservendoes_location extends StatefulWidget {
     final userlat;
     final userlng;
-  const uservendoes_location({Key? key, this.userlat, this.userlng}) : super(key: key);
+    uservendoes_location({Key? key, this.userlat, this.userlng}) : super(key: key);
 
   @override
   State<uservendoes_location> createState() => _uservendoes_locationState();
@@ -46,7 +46,7 @@ class _uservendoes_locationState extends State<uservendoes_location> {
 
    GoogleMapController? mapController; //contrller for Google map
   Set<Marker> markers = Set(); //markers for google map
-  LatLng startLocation = LatLng(vendorlat,vendorlng);
+  LatLng startLocation = LatLng(24.9841966,67.0617939);
   LatLng endLocation = LatLng(customerlat  ,customerlng );
   LatLng carLocation = LatLng(24.9841966,67.0617939);
    addMarkers() async {
