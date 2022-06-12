@@ -254,14 +254,17 @@ class _avilable_delievriesState extends State<avilable_delievries> {
                                                   print(customerlat);
                                                   print(customerlng);
                                                 });
+                                                http_service().getlatlong(snap.data!.data![i].orderId);
                                                 print(prefs.getDouble('customerlat' ) ) ;
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           uservendoes_location(
-                                                          userlat: snap.data!.data![i].orderId ,
-                                                          userlng:  customerlng  ,
+                                                          userlat: prefs.getDouble('customerlat' )! ,
+                                                          userlng:  prefs.getDouble('customerlng' )!  ,
+                                                           vendorlat: prefs.getDouble('resturentlat' )!,
+                                                            vendorlng: prefs.getDouble('returentlng' )!,
 
                                                           )),
                                                 );

@@ -36,8 +36,7 @@ class http_service with ChangeNotifier {
     );
     if (response.statusCode == 200) {
       var datas = (jsonDecode(response.body));
-
-      var token = datas['data']['token'];
+       var token = datas['data']['token'];
       final token1 = prefs.setString('new', token);
       var userid = datas['data']['user_id'];
       // final status1 = prefs.setString('stat', status);
@@ -72,8 +71,7 @@ class http_service with ChangeNotifier {
       var datas = (jsonDecode(response.body));
       print(datas);
       print("dddddddddd${status}");
-
-      notifyListeners();
+       notifyListeners();
       return datas;
     } else {
       return;
@@ -574,12 +572,13 @@ class http_service with ChangeNotifier {
         double lng = datas['data']['customer']['lng'];
         print(datas['data']['restaurant']['lat']);
         print(datas['data']['customer']['lat']);
-        // double vendorlat = datas['data']['restaurant']['lat'];
-        // double vendorlng = datas['data']['restaurant']['lat'];
+        double vendorlat =double.tryParse( datas['data']['restaurant']['lat'])!.toDouble();
+        double vendorlng = double.tryParse(datas['data']['restaurant']['lat'])!.toDouble();
         prefs.setDouble('customerlat',lat);
-        prefs.setDouble('customerlng',lng  );
-        // prefs.setDouble('resturentlat',vendorlat   );
-        // prefs.setDouble('returentlng',vendorlng );
+        prefs.setDouble('customerlng',lng);
+        prefs.setDouble('resturentlat',vendorlat);
+        prefs.setDouble('returentlng',vendorlng );
+        notifyListeners();
         return datas;
       } else {
         return null;
