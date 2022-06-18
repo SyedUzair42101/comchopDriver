@@ -188,7 +188,7 @@ getswitchval()async{
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '$textHolder',
+                          isSwitched?'online':'offline',
                           style: TextStyle(fontSize: 15),
                         ),
                         Switch(
