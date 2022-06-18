@@ -251,6 +251,7 @@ class _avilable_delievriesState extends State<avilable_delievries> {
                                                 setState(() {
                                                   customerlat =  prefs.getDouble('customerlat' )!;
                                                   customerlng  =  prefs.getDouble('customerlng' )!;
+
                                                   print(customerlat);
                                                   print(customerlng);
                                                 });

@@ -106,8 +106,8 @@ getswitchval()async{
     else
     {
       setState(() {
-        saveSwitchState(value);
-        isSwitched = false;
+         isSwitched = false;
+        switchData.write('isSwitched', isSwitched);
         textHolder = 'offine';
         status = 0;
         http_service().driverworkstatus(status);
@@ -169,11 +169,7 @@ getswitchval()async{
                 });
               },
             ),
-
-
-
-
-            SafeArea(
+    SafeArea(
               child: Padding(
                 padding: const EdgeInsets.only(
                   top: 28.0,
