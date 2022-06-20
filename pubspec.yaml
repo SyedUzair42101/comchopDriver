@@ -46,6 +46,7 @@ dependencies:
   uuid: ^3.0.0
   get:  4.1.4
   get_storage:  2.0.2
+  geocoding: ^2.0.4
 
 
 

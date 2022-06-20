@@ -13,15 +13,14 @@ import 'package:delivery_boy_application/widgets/dashboard_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:geocoding/geocoding.dart';
 class http_service with ChangeNotifier {
   var latitude;
   var longtitude;
   var baseurl = 'https://dnpprojects.com/demo/comshop/api/';
   final _prefs = SharedPreferences.getInstance();
   final  prefs = SharedPreferences.getInstance();
-
-  bool islogin = false;
+   bool islogin = false;
 
   void login(username, password, BuildContext context) async {
     notifyListeners();
@@ -550,6 +549,7 @@ class http_service with ChangeNotifier {
       return null;
     }
   }
+
   Future getlatlong(ID) async {
   try {
       final SharedPreferences prefs = await _prefs;
@@ -568,17 +568,23 @@ class http_service with ChangeNotifier {
       print(response.body);
       if (response.statusCode == 200) {
         var datas = (jsonDecode(response.body));
-         double lat = datas['data']['customer']['lat'];
-        double lng = datas['data']['customer']['lng'];
-        print(datas['data']['restaurant']['lat']);
-        print(datas['data']['customer']['lat']);
-        double vendorlat =double.tryParse( datas['data']['restaurant']['lat'])!.toDouble();
-        double vendorlng = double.tryParse(datas['data']['restaurant']['lat'])!.toDouble();
-        prefs.setDouble('customerlat',lat);
-        prefs.setDouble('customerlng',lng);
-        prefs.setDouble('resturentlat',vendorlat);
-        prefs.setDouble('returentlng',vendorlng );
-        notifyListeners();
+         //  print(datas['data']  );
+         // print(datas['data']['customer']['lng']);
+         // print(datas['data']['restaurant']['lat']);
+         // print(datas['data']['restaurant']['lng']);
+        var lat =double.parse(datas['data']['customer']['lat']) ;
+        var lng = double.parse(datas['data']['customer']['lng']);
+        var vendorlat =double.parse( datas['data']['restaurant']['lat']) ;
+        var vendorlng = double.parse(datas['data']['restaurant']['lat']) ;
+         prefs.setDouble('customerlat',lat);
+         prefs.setDouble('customerlng',lng);
+         prefs.setDouble('resturentlat',vendorlat);
+         prefs.setDouble('returentlng',vendorlng );
+        print(prefs.getDouble('customerlat' )  ) ;
+        print(prefs.getDouble('customerlng' )  ) ;
+        print(prefs.getDouble('resturentlat' )  ) ;
+        print(prefs.getDouble('returentlng' )  ) ;
+         notifyListeners();
         return datas;
       } else {
         return null;

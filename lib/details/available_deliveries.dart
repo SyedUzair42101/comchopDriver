@@ -246,27 +246,22 @@ class _avilable_delievriesState extends State<avilable_delievries> {
                                           children: [
                                             InkWell(
                                               onTap: ()async {
-                                                final _prefs = SharedPreferences.getInstance();
-                                                final SharedPreferences prefs = await _prefs;
-                                                setState(() {
-                                                  customerlat =  prefs.getDouble('customerlat' )!;
-                                                  customerlng  =  prefs.getDouble('customerlng' )!;
+                                                // final _prefs = SharedPreferences.getInstance();
+                                                // final SharedPreferences prefs = await _prefs;
+                                                //  http_service().getlatlong(snap.data!.data![i].orderId);
+                                                // print(prefs.getDouble('customerlat' )  ) ;
+                                                // print(prefs.getDouble('customerlng' )  ) ;
+                                                // print(prefs.getDouble('resturentlat' )  ) ;
+                                                // print(prefs.getDouble('returentlng' )  ) ;
 
-                                                  print(customerlat);
-                                                  print(customerlng);
-                                                });
-                                                http_service().getlatlong(snap.data!.data![i].orderId);
-                                                print(prefs.getDouble('customerlat' ) ) ;
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           uservendoes_location(
-                                                          userlat: prefs.getDouble('customerlat' )! ,
-                                                          userlng:  prefs.getDouble('customerlng' )!  ,
-                                                           vendorlat: prefs.getDouble('resturentlat' )!,
-                                                            vendorlng: prefs.getDouble('returentlng' )!,
-
+                                                          userlat: snap.data!.data![i].orderId,
+                                                           vendorlat: snap.data!.data![i].order!.restaurant!.latitude ,
+                                                            vendorlng: snap.data!.data![i].order!.restaurant!.longitude,
                                                           )),
                                                 );
                                               },

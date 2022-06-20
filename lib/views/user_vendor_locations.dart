@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:delivery_boy_application/details/alertbox.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,6 +9,7 @@ import 'package:delivery_boy_application/http_services/htt_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geolocator/geolocator.dart';
@@ -28,12 +30,13 @@ class uservendoes_location extends StatefulWidget {
 
 class _uservendoes_locationState extends State<uservendoes_location> {
   static double customerlat = 0.0;
-
+  final _prefs = SharedPreferences.getInstance();
+  final  prefs = SharedPreferences.getInstance();
   static double customerlng = 0.0;
   static double vendorlat = 0.0;
-
+  var data;
   static double vendorlng = 0.0;
-  static LatLng? _lastMapPosition;
+
 
   Future<Position> _getUserCurrentLocation() async {
     await Geolocator.requestPermission()
@@ -43,30 +46,84 @@ class _uservendoes_locationState extends State<uservendoes_location> {
     });
     return await Geolocator.getCurrentPosition();
   }
-
-  void _getUserLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    Position placemark = await Geolocator.getCurrentPosition();
-    setState(() {
-      _lastMapPosition = LatLng(position.latitude, position.longitude);
-      print('$_lastMapPosition');
-    });
+  void nME()async{
+    final query = "1600 Amphiteatre Parkway, Mountain View";
+    var locations = await locationFromAddress("Gronausestraat 710, Enschede");
+    var first = locations.first;
+    print("${first.latitude} : ${first.longitude}");
   }
 
-  _onCameraMove(CameraPosition position) {
-    _lastMapPosition = position.target;
-  }
+  Future getlatlong(ID) async {
+    try {
+      final SharedPreferences prefs = await _prefs;
+      final gettoken = prefs.getString('new');
+      var userHeader = {
+        "Accept": "application/json",
+        'Authorization': 'Bearer $gettoken',
+      };
+      final response = await http.get(
+        Uri.parse(
+          '${http_service().baseurl}getOrderLocation/$ID',
 
+        ),
+        headers: userHeader,
+      );
+      print( 'new data ${response.body} ');
+      if (response.statusCode == 200) {
+        var datas = (jsonDecode(response.body));
+         //  print(datas['data']  );
+        // print(datas['data']['customer']['lng']);
+        // print(datas['data']['restaurant']['lat']);
+        // print(datas['data']['restaurant']['lng']);
+        var lat =double.parse(datas['data']['customer']['lat']) ;
+        var lng = double.parse(datas['data']['customer']['lng']);
+        var vendorlat =double.parse( datas['data']['restaurant']['lat']) ;
+        var vendorlng = double.parse(datas['data']['restaurant']['lat']) ;
+        print( 'new data $data');
+        print(datas['data']['customer']['lat']);
+        setState(() {
+          data = datas;
+          // customerlat = lat;
+          // customerlng =lng;
+          // vendorlat = vendorlat;
+          // vendorlng = vendorlng;
+
+        });
+        print(customerlat);
+        print(customerlng);
+        print('new${vendorlat }' );
+        print(vendorlng);
+
+        // prefs.setDouble('customerlat',lat);
+        // prefs.setDouble('customerlng',lng);
+        // prefs.setDouble('resturentlat',vendorlat);
+        // prefs.setDouble('returentlng',vendorlng );
+        // print(prefs.getDouble('customerlat' )  ) ;
+        // print(prefs.getDouble('customerlng' )  ) ;
+        // print(prefs.getDouble('resturentlat' )  ) ;
+        // print(prefs.getDouble('returentlng' )  ) ;
+         return datas;
+      } else {
+        return null;
+      }
+    } on Exception catch (exception) {
+      return null;
+    } catch (error) {
+      print(error.toString());
+      return null;
+    }
+  }
   @override
   void initState() {
+
     super.initState();
-    customerlat = widget.userlat;
-    customerlng = widget.userlng;
-    vendorlat = widget.vendorlat;
-    vendorlng = widget.userlng;
-    print(customerlat);
-    print(customerlng);
+    // http_service(). getlatlong(2);
+     // customerlat = widget.userlat;
+    // customerlng = widget.userlng;
+    // vendorlat = widget.vendorlat;
+    // vendorlng = widget.userlng;
+    // print(customerlat);
+    // print(customerlng);
     http_service().getlatlong(widget.userlat);
   }
 
@@ -114,9 +171,9 @@ class _uservendoes_locationState extends State<uservendoes_location> {
           GoogleMap(
             myLocationEnabled: true,
             compassEnabled: true,
-            myLocationButtonEnabled: false,
+            myLocationButtonEnabled: true,
             zoomGesturesEnabled: true,
-            //Map widget from google_maps_flutter package
+             //Map widget from google_maps_flutter package
             //enable Zoom in, out on map
             initialCameraPosition: CameraPosition(
               //innital position in map
@@ -178,8 +235,10 @@ class _uservendoes_locationState extends State<uservendoes_location> {
                           "images/user.png",
                         );
                         setState(() {
-                          vendorlat = widget.vendorlat;
-                          vendorlng = widget.vendorlng;
+                          vendorlat = double.parse(widget.vendorlat).toDouble() ;
+                          vendorlng = double.parse(widget.vendorlng).toDouble();
+                          print(vendorlat);
+                          print(vendorlng);
                           LatLng endlocation  =
                           LatLng(vendorlat, vendorlng);
                           print('end location${endlocation}' );
@@ -237,6 +296,7 @@ class _uservendoes_locationState extends State<uservendoes_location> {
                             ),
                           );
                         });
+
                       },
                     ),
                     // Container(
